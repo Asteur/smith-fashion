@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -52,109 +53,42 @@ public class FormActivity extends AppCompatActivity {
         Intent intent = getIntent();
         Bundle p = intent.getExtras();
         Bitmap x = (Bitmap) p.get("Image");
-        new SendPostRequest().execute();
-
-    }
-
-    public class SendPostRequest extends AsyncTask<String, Void, String> {
-
-        protected void onPreExecute(){}
-
-        protected String doInBackground(String... arg0) {
-
-            try {
-
-                URL url = new URL("http://wearthistoday.monotas.com/api/echo"); // here is your URL path
-
-                JSONObject postDataParams = new JSONObject();
-                postDataParams.put("name", "abc");
-                postDataParams.put("email", "abc@gmail.com");
-                Log.e("params",postDataParams.toString());
-
-                final String json =
-                        "{\"user\":{" +
-                                "\"name\":\"name1\","+
-                                "\"password\":\"password\","+
-                                "\"password_confirmation\":\"password\""+
-                                "}}";
-
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                conn.setReadTimeout(15000 /* milliseconds */);
-                conn.setConnectTimeout(15000 /* milliseconds */);
-                conn.setRequestMethod("POST");
-                conn.setRequestProperty("Content-Type", "application/json; charset=utf-8");
-                conn.setDoInput(true);
-                conn.setDoOutput(true);
-
-                OutputStream os = conn.getOutputStream();
-                BufferedWriter writer = new BufferedWriter(
-                        new OutputStreamWriter(os, "UTF-8"));
-                writer.write(json);
-
-                writer.flush();
-                writer.close();
-                os.close();
-
-                int responseCode=conn.getResponseCode();
-
-                if (responseCode == HttpsURLConnection.HTTP_OK) {
-
-                    BufferedReader in=new BufferedReader(new
-                            InputStreamReader(
-                            conn.getInputStream()));
-
-                    StringBuffer sb = new StringBuffer("");
-                    String line="";
-
-                    while((line = in.readLine()) != null) {
-
-                        sb.append(line);
-                        break;
+        final String json =
+                "{\"user\":{" +
+                        "\"name\":\"name1\","+
+                        "\"password\":\"password\","+
+                        "\"password_confirmation\":\"password\""+
+                        "}}";
+        JSONObject obj = null;
+        try {
+            obj = new JSONObject(json);
+            String url = "http://wearthistoday.monotas.com/api/echo";
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                    Request.Method.POST,
+                    url,
+                    obj,
+                    new com.android.volley.Response.Listener<JSONObject>(){
+                        @Override
+                        public void onResponse(JSONObject response){
+                            Toast.makeText(getApplicationContext(),"Success!",Toast.LENGTH_SHORT).show();
+                            Log.d("MainActivity2",response.toString());
+                        }
+                    },
+                    new com.android.volley.Response.ErrorListener(){
+                        @Override
+                        public void onErrorResponse(VolleyError error){
+                            Log.d("MainActivity3",error.toString());
+                        }
                     }
 
-                    in.close();
-                    return sb.toString();
+            );
 
-                }
-                else {
-                    return new String("false : "+responseCode);
-                }
-            }
-            catch(Exception e){
-                return new String("Exception: " + e.getMessage());
-            }
-
+            RequestSingleton.getInstance(this).addToReqeustQueue(jsonObjectRequest);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
 
-        @Override
-        protected void onPostExecute(String result) {
-            Toast.makeText(getApplicationContext(), result,
-                    Toast.LENGTH_LONG).show();
-        }
     }
 
-    public String getPostDataString(JSONObject params) throws Exception {
 
-        StringBuilder result = new StringBuilder();
-        boolean first = true;
-
-        Iterator<String> itr = params.keys();
-
-        while(itr.hasNext()){
-
-            String key= itr.next();
-            Object value = params.get(key);
-
-            if (first)
-                first = false;
-            else
-                result.append("&");
-
-            result.append(URLEncoder.encode(key, "UTF-8"));
-            result.append("=");
-            result.append(URLEncoder.encode(value.toString(), "UTF-8"));
-
-        }
-        return result.toString();
-    }
 }
