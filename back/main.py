@@ -3,7 +3,6 @@ from flask import Flask, abort, request
 import json
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'secret!'
 
 # "/"に入ってくる時
 @app.route('/')
