@@ -24,4 +24,5 @@ def echo():
     return json.dumps(request.json)
 
 if __name__ == '__main__':
+    # run application with debug mode
     app.run(port=3000, host='0.0.0.0', debug=True)
