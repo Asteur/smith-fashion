@@ -4,7 +4,7 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
 
 @app.route('/')
-def hello_world():
+def basic_response():
     return "Wear This TodayサービスのAPIサーバーです。詳細はhttps://github.com/kdrl/Wear-This-Today より確認ください。"
 
 if __name__ == '__main__':
