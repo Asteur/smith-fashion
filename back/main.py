@@ -9,8 +9,10 @@ app = Flask(__name__)
 def basic_response():
     return "Wear This TodayサービスのAPIサーバーです。詳細はhttps://github.com/kdrl/Wear-This-Today より確認ください。\n"
 
-# "/api/echo"に入ってくる時
-# methodsにPOSTを指定すると、POSTリクエストを受けられる
+"""
+"/api/echo"に入ってくる時
+methodsにPOSTを指定すると、POSTリクエストを受けられる
+"""
 @app.route('/api/echo', methods=['POST'])
 def echo():
     # もしももらったデータがjsonでなかったら、400を返す。(400 Bad Request)
