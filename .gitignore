@@ -1,5 +1,8 @@
 # Created by https://www.gitignore.io/api/osx,windows,xcode,vim,emacs,sublimetext,git,pycharm,python,node
 
+### nohup ###
+nohup.out
+
 ### OSX ###
 *.DS_Store
 .AppleDouble
