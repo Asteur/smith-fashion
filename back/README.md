@@ -31,4 +31,24 @@ hello world!<br>
 hello world!
 </td>
 </tr>
+<tr>
+<td>/api/savetest</td>
+<td>POST</td>
+<td>
+any JSON data
+</td>
+<td>
+"saved" or "error"
+</td>
+</tr>
+<tr>
+<td>/api/loadtest</td>
+<td>GET</td>
+<td>
+None
+</td>
+<td>
+savetestで保存されたデータの中で一番最新のものが返ってくる
+</td>
+</tr>
 </table>
