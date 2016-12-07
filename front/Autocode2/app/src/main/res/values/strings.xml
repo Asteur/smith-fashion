@@ -1,3 +1,23 @@
 <resources>
-    <string name="app_name">Autocode</string>
+    <string name="app_name">Wear This Today</string>
+    <string-array name="colorlist">
+        <item>赤</item>
+        <item>白</item>
+        <item>ベージュ</item>
+        <item>黒</item>
+        <item>紺</item>
+        <item>青</item>
+    </string-array>
+    <string-array name="typelist">
+        <item>T-シャツ(半袖)</item>
+        <item>T-シャツ(長袖)</item>
+        <item>セーター</item>
+        <item>パーカー</item>
+        <item>シャツ</item>
+        <item>ワイシャツ</item>
+        <item>ネクタイ</item>
+        <item>ジャケット</item>
+        <item>ジーンズ</item>
+        <item>スラックス</item>
+    </string-array>
 </resources>
