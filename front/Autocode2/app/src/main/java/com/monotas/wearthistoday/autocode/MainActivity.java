@@ -8,9 +8,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Spinner;
 
 public class MainActivity extends AppCompatActivity {
     static final int REQUEST_CAPTURE_IMAGE = 100;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

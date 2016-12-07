@@ -12,7 +12,9 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 
@@ -51,14 +53,21 @@ import okhttp3.Response;
 
 public class FormActivity extends AppCompatActivity {
     /*ここでView関連のオブジェクトを宣言*/
-    boolean isPermitted;//位置情報取得許可フラグ
+    Spinner colorSpinner;
+    Spinner typeSpinner;
+    ImageView imageView;
     LocationManager mLocationManager;//位置情報取得用Object
-
+    /**/
+    boolean isPermitted;//位置情報取得許可フラグ, あとで別のActivityに移す
+    Bitmap clothesImage;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         isPermitted = false;
         setContentView(R.layout.activity_form);
+        colorSpinner = (Spinner)findViewById(R.id.colorSpinner);
+        typeSpinner = (Spinner)findViewById(R.id.typeSpinner);
+        imageView = (ImageView)findViewById(R.id.imageView);
 
         //sdk>=23の時
         if(Build.VERSION.SDK_INT >= 23){
@@ -70,11 +79,19 @@ public class FormActivity extends AppCompatActivity {
         }
         if(isPermitted){
             mLocationManager = (LocationManager)getSystemService(LOCATION_SERVICE);
-
         }
         Intent intent = getIntent();
         Bundle p = intent.getExtras();
-        Bitmap x = (Bitmap) p.get("Image");
+        clothesImage = (Bitmap) p.get("Image");
+        imageView.setImageBitmap(clothesImage);
+
+    }
+    /*登録ボタン*/
+    public void register(View v){
+        /*ここでフォームから情報を取得*/
+        String typeText = (String)typeSpinner.getSelectedItem();
+        String colorText=(String)colorSpinner.getSelectedItem();
+
         final String json =
                 "{\"user\":{" +
                         "\"name\":\"name1\","+
@@ -84,11 +101,13 @@ public class FormActivity extends AppCompatActivity {
         JSONObject obj = null;
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        x.compress(Bitmap.CompressFormat.PNG,100,baos);
+        clothesImage.compress(Bitmap.CompressFormat.PNG,100,baos);
         byte[] mImageData = baos.toByteArray();
-
+        //ここで通信を行います。
         try {
-            obj = new JSONObject(json);
+            obj = new JSONObject();
+            obj.put("Color",colorText);
+            obj.put("type",typeText);
             obj.put("Image",mImageData);
             String url = "http://wearthistoday.monotas.com/api/echo";
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
@@ -99,16 +118,16 @@ public class FormActivity extends AppCompatActivity {
                         @Override
                         public void onResponse(JSONObject response){
                             Toast.makeText(getApplicationContext(),"Success!",Toast.LENGTH_SHORT).show();
-                            Log.d("MainActivity2",response.toString());
+                            Log.d("FormActivity",response.toString());
+                            finish();
                         }
                     },
                     new com.android.volley.Response.ErrorListener(){
                         @Override
                         public void onErrorResponse(VolleyError error){
-                            Log.d("MainActivity3",error.toString());
+                            Log.d("FormActivity",error.toString());
                         }
                     }
-
             );
 
             RequestSingleton.getInstance(this).addToReqeustQueue(jsonObjectRequest);
@@ -116,6 +135,9 @@ public class FormActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
+
+    /*以下のコードはこのActivityでは使わなくなりました. */
     /*位置情報許可の確認*/
     private void checkPermission(){
         //許可済み
