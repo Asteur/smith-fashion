@@ -48,6 +48,8 @@ import java.util.jar.Manifest;
 
 import javax.net.ssl.HttpsURLConnection;
 
+import io.realm.Realm;
+import io.realm.RealmResults;
 import okhttp3.Response;
 
 
@@ -60,6 +62,9 @@ public class FormActivity extends AppCompatActivity {
     /**/
     boolean isPermitted;//位置情報取得許可フラグ, あとで別のActivityに移す
     Bitmap clothesImage;
+    Realm realm;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,13 +89,14 @@ public class FormActivity extends AppCompatActivity {
         Bundle p = intent.getExtras();
         clothesImage = (Bitmap) p.get("Image");
         imageView.setImageBitmap(clothesImage);
-
+        Realm.init(this);
+        realm = Realm.getDefaultInstance();
     }
     /*登録ボタン*/
     public void register(View v){
         /*ここでフォームから情報を取得*/
-        String typeText = (String)typeSpinner.getSelectedItem();
-        String colorText=(String)colorSpinner.getSelectedItem();
+        final String typeText = (String)typeSpinner.getSelectedItem();
+        final String colorText=(String)colorSpinner.getSelectedItem();
 
         final String json =
                 "{\"user\":{" +
@@ -102,7 +108,18 @@ public class FormActivity extends AppCompatActivity {
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         clothesImage.compress(Bitmap.CompressFormat.PNG,100,baos);
-        byte[] mImageData = baos.toByteArray();
+        final byte[] mImageData = baos.toByteArray();
+
+        /*データの登録(ローカル)*/
+
+
+        realm.beginTransaction();
+        ClothesData clothesData = realm.createObject(ClothesData.class);
+        clothesData.setColorText(colorText);
+        clothesData.setTypeText(typeText);
+        clothesData.setImageData(mImageData);
+        realm.commitTransaction();
+        realm.close();
         //ここで通信を行います。
         try {
             obj = new JSONObject();
@@ -134,6 +151,7 @@ public class FormActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
     }
 
 
