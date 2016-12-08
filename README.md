@@ -45,6 +45,8 @@ Android
 ## Back-end
 ### ライブラリ
 Flask<br>Numpy<br>Scipy<br>Pandas
+### データベース
+Mysql
 
 # 活用した外部技術
 StyleNetによるファッションの特徴抽出
