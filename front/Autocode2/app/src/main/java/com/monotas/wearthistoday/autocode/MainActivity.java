@@ -10,6 +10,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Spinner;
 
+import io.realm.Realm;
+
+
 public class MainActivity extends AppCompatActivity {
     static final int REQUEST_CAPTURE_IMAGE = 100;
 
@@ -18,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
     }
 
 
@@ -26,6 +30,12 @@ public class MainActivity extends AppCompatActivity {
         intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
 
         startActivityForResult(intent, REQUEST_CAPTURE_IMAGE);
+    }
+
+    public void closet(View v){
+        Intent intent = new Intent(this,ListActivity.class);
+        startActivity(intent);
+
     }
 
     @Override
