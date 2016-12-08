@@ -52,3 +52,31 @@ savetestで保存されたデータの中で一番最新のものが返ってく
 </td>
 </tr>
 </table>
+
+# データベース
+mysql
+## Install
+<pre>
+Wear-This-Today admin$ brew install mysql
+Warning: You are using a pre-release version of Xcode.
+You may encounter build failures or other breakages.
+Please create pull-requests instead of filing issues.
+==> Downloading https://homebrew.bintray.com/bottles/mysql-5.7.15.el_capitan.bot
+######################################################################## 100.0%
+==> Pouring mysql-5.7.15.el_capitan.bottle.tar.gz
+==> Using the sandbox
+==> /usr/local/Cellar/mysql/5.7.15/bin/mysqld --initialize-insecure --user=admin
+==> Caveats
+We've installed your MySQL database without a root password. To secure it run:
+    mysql_secure_installation
+
+To connect run:
+    mysql -uroot
+
+To have launchd start mysql now and restart at login:
+  brew services start mysql
+Or, if you don't want/need a background service you can just run:
+  mysql.server start
+==> Summary
+🍺  /usr/local/Cellar/mysql/5.7.15: 13,510 files, 445.9M
+</pre>
