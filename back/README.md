@@ -55,7 +55,7 @@ savetestで保存されたデータの中で一番最新のものが返ってく
 
 # データベース
 mysql
-## Install
+## Local Install
 <pre>
 Wear-This-Today admin$ brew install mysql
 Warning: You are using a pre-release version of Xcode.
@@ -80,3 +80,5 @@ Or, if you don't want/need a background service you can just run:
 ==> Summary
 🍺  /usr/local/Cellar/mysql/5.7.15: 13,510 files, 445.9M
 </pre>
+### References
+https://github.com/helloheesu/SecretlyGreatly/wiki/%EB%A7%A5%EC%97%90%EC%84%9C-mysql-%EC%84%A4%EC%B9%98-%ED%9B%84-%ED%99%98%EA%B2%BD%EC%84%A4%EC%A0%95%ED%95%98%EA%B8%B0
