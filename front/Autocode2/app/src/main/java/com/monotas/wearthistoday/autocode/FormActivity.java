@@ -2,6 +2,7 @@ package com.monotas.wearthistoday.autocode;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.location.LocationManager;
@@ -102,7 +103,7 @@ public class FormActivity extends AppCompatActivity {
 
         /*データの登録(ローカル)*/
 
-
+        realm.beginTransaction();
         ClothesData clothesData = realm.createObject(ClothesData.class);
         clothesData.setColorText(colorText);
         clothesData.setTypeText(typeText);
@@ -115,11 +116,16 @@ public class FormActivity extends AppCompatActivity {
             obj.put("Color",colorText);
             obj.put("type",typeText);
             obj.put("Image",mImageData);
-            String url = "http://wearthistoday.monotas.com/api/echo";
+            JSONObject alldata = new JSONObject();
+            SharedPreferences prefs = getSharedPreferences("token",MODE_PRIVATE);
+            String dataString = prefs.getString("token","null");
+            String url = "http://wearthistoday.monotas.com/api/test/echo";
+            alldata.put("token",dataString);
+            alldata.put("Data",obj);
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                     Request.Method.POST,
                     url,
-                    obj,
+                    alldata,
                     new com.android.volley.Response.Listener<JSONObject>(){
                         @Override
                         public void onResponse(JSONObject response){
@@ -132,6 +138,7 @@ public class FormActivity extends AppCompatActivity {
                         @Override
                         public void onErrorResponse(VolleyError error){
                             Log.d("FormActivity",error.toString());
+                            finish();
                         }
                     }
             );
@@ -140,6 +147,7 @@ public class FormActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
 
     }
 
