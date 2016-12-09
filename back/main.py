@@ -50,8 +50,14 @@ def testLoad():
     connection = mysql.connect()
     cursor = connection.cursor()
     cursor.execute('''select * from test''')
-    result = cursor.fetchall()
-    return json.dumps(result)
+    columns = cursor.description
+    result = []
+    for value in cursor.fetchall():
+        tmp = {}
+        for (index, column) in enumerate(value):
+            tmp[columns[index][0]] = column
+        result.append(tmp)
+    return str(result)
 
 @app.route('/api/test/save', methods=['POST'])
 def testSave():
