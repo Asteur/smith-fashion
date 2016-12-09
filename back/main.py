@@ -2,6 +2,7 @@
 from flask import Flask, abort, request
 from flaskext.mysql import MySQL
 import redis
+import requests
 import json
 # 自作api.pyをロード
 import api
@@ -49,8 +50,14 @@ def testLoad():
     connection = mysql.connect()
     cursor = connection.cursor()
     cursor.execute('''select * from test''')
-    result = cursor.fetchall()
-    return json.dumps(result)
+    columns = cursor.description
+    result = []
+    for value in cursor.fetchall():
+        tmp = {}
+        for (index, column) in enumerate(value):
+            tmp[columns[index][0]] = column
+        result.append(tmp)
+    return str(result)
 
 @app.route('/api/test/save', methods=['POST'])
 def testSave():
@@ -78,6 +85,10 @@ def testCheckLogin():
     else:
         result = "authorized"
     return result
+
+@app.route('/api/test/request', methods=['GET'])
+def testRequest():
+    return requests.get('http://wearthistoday.monotas.com').content
 
 if __name__ == '__main__':
     # run application with debug mode
