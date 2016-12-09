@@ -1,6 +1,7 @@
 package com.monotas.wearthistoday.autocode;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -79,21 +80,25 @@ public class ListActivity extends AppCompatActivity {
                 final byte[] imageData = clothesData.getImageData();
 
                 try {
+                    SharedPreferences prefs = getSharedPreferences("token",MODE_PRIVATE);
+                    String dataString = prefs.getString("token","null");
+                    JSONObject alldata = new JSONObject();
                     JSONObject obj = new JSONObject();
                     obj.put("Color",color);
                     obj.put("type",type);
                     obj.put("Image",imageData);
-                    String url = "http://wearthistoday.monotas.com/api/echo";
+                    alldata.put("Data",obj);
+                    alldata.put("token",dataString);
+                    String url = "http://wearthistoday.monotas.com/api/test/echo";
                     JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                             Request.Method.POST,
                             url,
-                            obj,
+                            alldata,
                             new com.android.volley.Response.Listener<JSONObject>(){
                                 @Override
                                 public void onResponse(JSONObject response){
                                     Toast.makeText(getApplicationContext(),"Success!",Toast.LENGTH_SHORT).show();
                                     Log.d("FormActivity",response.toString());
-                                    finish();
                                 }
                             },
                             new com.android.volley.Response.ErrorListener(){
@@ -108,11 +113,13 @@ public class ListActivity extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                adapter.remove(clothesData);
+                adapter.notifyDataSetChanged();
+
                 clothesData.deleteFromRealm();
                 realm.commitTransaction();
                 Toast.makeText(getApplicationContext(),"データを削除しました。",Toast.LENGTH_SHORT).show();
-                adapter.remove(clothesData);
-                adapter.notifyDataSetChanged();
+
                 return false;
             }
         });
