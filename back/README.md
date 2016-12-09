@@ -15,13 +15,13 @@
 <td>Wear This TodayサービスのAPIサーバーです。詳細はhttps://github.com/kdrl/Wear-This-Today より確認ください。</td>
 </tr>
 <tr>
-<td>/api/echo</td>
+<td>/api/test/echo</td>
 <td>POST</td>
 <td>JSON形式のデータ</td>
 <td>JSON形式のデータ(送ったデータが帰ってくる)</td>
 </tr>
 <tr>
-<td>/api/helloworld</td>
+<td>/api/test/helloworld</td>
 <td>POST</td>
 <td>
 { "num": 2(定数) }
@@ -32,7 +32,7 @@ hello world!
 </td>
 </tr>
 <tr>
-<td>/api/savetest</td>
+<td>/api/test/savetest</td>
 <td>POST</td>
 <td>
 any JSON data
@@ -42,7 +42,7 @@ any JSON data
 </td>
 </tr>
 <tr>
-<td>/api/loadtest</td>
+<td>/api/test/loadtest</td>
 <td>GET</td>
 <td>
 None
