@@ -1,6 +1,7 @@
 # coding=utf-8
 from flask import Flask, abort, request
 from flaskext.mysql import MySQL
+import redis
 import json
 # 自作api.pyをロード
 import api
@@ -14,6 +15,8 @@ app.config['MYSQL_DATABASE_DB'] = 'wearthistoday'
 
 mysql.init_app(app)
 
+r = redis.StrictRedis(host='localhost', port=6379, db=0)
+
 # "/"に入ってくる時
 @app.route('/')
 def basic_response():
@@ -21,7 +24,7 @@ def basic_response():
 
 # "/api/echo"にPOSTでrequestが来たら以下が発動
 @app.route('/api/test/echo', methods=['POST'])
-def echo():
+def testEcho():
     # もしももらったデータがjsonでなかったら、400を返す。(400 Bad Request)
     if not request.json:
         abort(400)
@@ -31,7 +34,7 @@ def echo():
     return json.dumps(request.json)
 
 @app.route('/api/test/helloworld', methods=['POST'])
-def helloWorld():
+def testHelloWorld():
     # もしももらったデータがjsonでなかったり、numをキーとする値を持ってなかったら、400を返す。(400 Bad Request)
     if not request.json["num"]:
         abort(400)
@@ -62,6 +65,20 @@ def testSave():
     connection.commit()
 
     return "OK"
+
+@app.route('/api/test/signin', methods=['POST'])
+def testSignin():
+    r.setex(str(request.json["id"]),10,True)
+    return "ok"
+
+@app.route('/api/test/checklogin', methods=['POST'])
+def testCheckLogin():
+    result = r.get(str(request.json["id"]))
+    if not result:
+        result = "not authorized"
+    else:
+        result = "authorized"
+    return result
 
 if __name__ == '__main__':
     # run application with debug mode
