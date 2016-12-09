@@ -74,3 +74,66 @@ etc...(その他全て文字データ(TextView))
 
 * 実際に着たかどうか
 * リコメンドに対する評価
+
+## Jsonによる送受信
+
+### 登録時 (POST)
+
+#### 送り値
+
+| Key        | Value       | Type         |
+|:-----------|:------------|:-------------|
+| Username   |  ユーザー名   |     String   |
+| gender     |      性別    |    Int(0 : 女性 1 : 男性)   |
+| Color    |        色      |    String     |
+| type         |      服の種類 |     String     |
+| Image      |    服の写真   |    byte[]    |
+
+#### 帰り値
+
+jsonで成功した!みたいなデータ出してくれるといいです。
+
+### 画像の圧縮方法について
+
+PNGで圧縮してます!! 多分ここミスるとやばいことになります...
+
+### リコメンド (GET)
+
+ここで位置情報とユーザー名を送ります。
+
+#### 送りの際の値
+
+| Key        | Value       | Type         |
+|:-----------|:------------|:-------------|
+| Username   |  ユーザー名   |     String   |
+| gender     |      性別    |    Int(0 : 女性 1 : 男性)   |
+| latitude     |      緯度    |    double  |
+|   longitude  |      経度    |    double |
+#### 帰り値(これが欲しい...)
+
+| Key        | Value       | Type         |
+|:-----------|:------------|:-------------|
+| Image      |    服の写真   |    byte[]    |
+| Color      |  色         |     String   |
+| type       |     服の種類 |     String   |
+
+こちらで検索かけます...
+
+#### 気に入った場合(POST)
+
+| Key        | Value       | Type         |
+|:-----------|:------------|:-------------|
+| Username   |  ユーザー名   |     String   |
+| gender     |      性別    |    Int(0 : 女性 1 : 男性)   |
+| Image      |    服の写真   |    byte[]    |
+| Color      |  色         |     String   |
+| type       |     服の種類 |     String   |
+#### 気に入らなかった場合(POST)
+
+| Key        | Value       | Type         |
+|:-----------|:------------|:-------------|
+| Username   |  ユーザー名   |     String   |
+| gender     |      性別    |    Int(0 : 女性 1 : 男性)   |
+| Image      |    服の写真   |    byte[]    |
+| Color      |  色         |     String   |
+| type       |     服の種類 |     String   |
