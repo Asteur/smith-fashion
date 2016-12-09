@@ -2,6 +2,7 @@
 from flask import Flask, abort, request
 from flaskext.mysql import MySQL
 import redis
+import requests
 import json
 # 自作api.pyをロード
 import api
@@ -79,6 +80,10 @@ def testCheckLogin():
     else:
         result = "authorized"
     return result
+
+@app.route('/api/test/request', methods=['GET'])
+def testRequest():
+    return requests.get('http://wearthistoday.monotas.com').content
 
 if __name__ == '__main__':
     # run application with debug mode
