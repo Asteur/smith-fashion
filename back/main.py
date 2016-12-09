@@ -61,7 +61,6 @@ def testSave():
     connection = mysql.connect()
     cursor = connection.cursor()
     query = '''insert into test (content) values (" ''' + str(request.json["content"]) + ''' ")'''
-
     cursor.execute(query)
     connection.commit()
 
