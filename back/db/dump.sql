@@ -43,7 +43,7 @@ CREATE TABLE `test` (
 
 LOCK TABLES `test` WRITE;
 /*!40000 ALTER TABLE `test` DISABLE KEYS */;
-INSERT INTO `test` VALUES (1,'test'),(2,'test2'),(3,'test3'),(4,'test4'),(5,' {\'content\': \'テストをする\'} ');
+INSERT INTO `test` VALUES (1,'test'),(2,'test2'),(3,'test3'),(4,'test4');
 /*!40000 ALTER TABLE `test` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

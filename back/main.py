@@ -19,7 +19,6 @@ mysql.init_app(app)
 def basic_response():
     return "Wear This TodayサービスのAPIサーバーです。詳細はhttps://github.com/kdrl/Wear-This-Today より確認ください。\n"
 
-
 # "/api/echo"にPOSTでrequestが来たら以下が発動
 @app.route('/api/test/echo', methods=['POST'])
 def echo():
@@ -57,7 +56,7 @@ def testSave():
         abort(400)
     connection = mysql.connect()
     cursor = connection.cursor()
-    query = '''insert into test (content) values (" ''' + str(request.json) + ''' ")'''
+    query = '''insert into test (content) values (" ''' + str(request.json["content"]) + ''' ")'''
 
     cursor.execute(query)
     connection.commit()
