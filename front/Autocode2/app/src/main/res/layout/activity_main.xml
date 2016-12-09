@@ -16,8 +16,7 @@
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:id="@+id/ll">
+        android:layout_alignParentStart="true">
 
         <Button
             android:text="登録"
@@ -34,10 +33,10 @@
             android:onClick="closet" />
 
         <Button
-            android:text="ログアウト"
+            android:text="ユーザ初期登録"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/button6"
-            android:onClick="logOut" />
+            android:id="@+id/button4"
+            android:onClick="initial_register" />
     </LinearLayout>
 </RelativeLayout>

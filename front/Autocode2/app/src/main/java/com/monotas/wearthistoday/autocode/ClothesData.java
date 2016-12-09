@@ -35,5 +35,4 @@ public class ClothesData extends RealmObject{
         return this.imageData;
     }
 
-
 }
