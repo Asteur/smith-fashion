@@ -1,5 +1,9 @@
 # Created by https://www.gitignore.io/api/osx,windows,xcode,vim,emacs,sublimetext,git,pycharm,python,node
 
+### secret
+secret.txt
+back/db/secret.txt
+
 ### nohup ###
 nohup.out
 
