@@ -1,10 +1,13 @@
 package com.monotas.wearthistoday.autocode;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -42,6 +45,8 @@ public class ListActivity extends AppCompatActivity {
     private Realm realm;
     public ListView mListView;
     ClothesDataAdapter adapter;
+    static final int REQUEST_CAPTURE_IMAGE = 100;
+    ArrayList<ClothesData> arrayList;
 
 
     @Override
@@ -53,8 +58,11 @@ public class ListActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent intent = new Intent();
+                intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
+
+                startActivityForResult(intent, REQUEST_CAPTURE_IMAGE);
+
             }
         });
         Realm.init(this);
@@ -126,6 +134,39 @@ public class ListActivity extends AppCompatActivity {
             }
         });
 
+
+
+    }
+    @Override
+    protected void onRestart(){
+        super.onRestart();
+        adapter.notifyDataSetChanged();
+    }
+    @Override
+    protected void onStart(){
+        super.onStart();
+        adapter.notifyDataSetChanged();
+    }
+    @Override
+    protected void onResume(){
+        super.onResume();
+        Log.d("resultCode", "810");
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        if(requestCode == REQUEST_CAPTURE_IMAGE && resultCode == Activity.RESULT_OK){
+            Bitmap capturedImage = (Bitmap)data.getExtras().get("data");
+            Intent formIntent = new Intent(this,FormActivity.class);
+            formIntent.putExtra("Image",capturedImage);
+            startActivity(formIntent);
+        }
+        else{
+            Log.d("Hoge1","After Register");
+            RealmResults<ClothesData> realmResults = realm.where(ClothesData.class).findAll();
+
+            arrayList.add(realmResults.get(realmResults.size()-1));
+            adapter.notifyDataSetChanged();
+        }
 
 
     }
