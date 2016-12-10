@@ -5,12 +5,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.provider.MediaStore;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -46,12 +48,16 @@ public class MainActivity extends AppCompatActivity {
 
     Button button;
     String data;
-
+    RelativeLayout layout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        layout = (RelativeLayout)findViewById(R.id.activity_main);
         FacebookSdk.sdkInitialize(this.getApplicationContext());
          // Tokenを取り出す. (もしないなら"null"が得られる)
+
 
         prefs = getSharedPreferences("token",MODE_PRIVATE);
         data = prefs.getString("token","null");
@@ -85,6 +91,8 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void onErrorResponse(VolleyError error){
                                 Log.d("FormActivity",error.toString());
+                                Snackbar.make(layout, "送信できません", Snackbar.LENGTH_LONG)
+                                        .setAction("Action", null).show();
 
                             }
                         }
@@ -96,8 +104,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+
 
     }
 
@@ -110,10 +117,6 @@ public class MainActivity extends AppCompatActivity {
 
             startActivityForResult(intent, REQUEST_CAPTURE_IMAGE);
         }
-
-
-
-
     }
 
     public void closet(View v){
@@ -179,6 +182,8 @@ public class MainActivity extends AppCompatActivity {
                                         @Override
                                         public void onErrorResponse(VolleyError error){
                                             Log.d("FormActivity",error.toString());
+                                            Snackbar.make(layout, "送信できません", Snackbar.LENGTH_LONG)
+                                                    .setAction("Action", null).show();
 
                                         }
                                     }
