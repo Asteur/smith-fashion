@@ -126,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
     /*ログアウトのボタン*/
     public void logOut(View v){
         //SharedPreferenceの削除
-        prefs.edit().clear().commit();
+        prefs.edit().remove("token");
         data = "null";
         //ログアウトの処理
         new GraphRequest(AccessToken.getCurrentAccessToken(), "/me/permissions/", null, HttpMethod.DELETE, new GraphRequest
@@ -214,6 +214,10 @@ public class MainActivity extends AppCompatActivity {
     public void test(View v){
         //ここで通信のテストする!!
 
+    }
+    public void initial_register(View v){
+        Intent intent = new Intent(this,RegisterActivity.class);
+        startActivity(intent);
     }
 
     @Override

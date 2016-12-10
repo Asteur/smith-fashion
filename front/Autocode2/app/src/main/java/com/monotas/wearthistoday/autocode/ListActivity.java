@@ -60,9 +60,11 @@ public class ListActivity extends AppCompatActivity {
         Realm.init(this);
         realm = Realm.getDefaultInstance();
         RealmResults<ClothesData> realmResults = realm.where(ClothesData.class).findAll();
-        ClothesData[] list = (ClothesData[]) realmResults.toArray();
+        if(realmResults == null){
+            Log.d("RealmResults",null);
+        }
         ArrayList<ClothesData> arrayList = new ArrayList<>();
-        for(ClothesData obj : list){
+        for(ClothesData obj : realmResults){
             arrayList.add(obj);
         }
         adapter = new ClothesDataAdapter(this,0,arrayList);
