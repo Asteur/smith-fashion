@@ -81,7 +81,7 @@ public class StartActivity extends AppCompatActivity {
                         try {
                             JSONObject obj = new JSONObject();
 
-                            String url = "http://wearthistoday.monotas.com/api/test/echo";
+                            String url = "http://wearthistoday.monotas.com/api/signin";
                             obj.put("token",accessToken);
                             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                                     Request.Method.POST,
