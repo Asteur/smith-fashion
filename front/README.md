@@ -5,7 +5,7 @@ HACK U 2016
 Androidでのフロントエンドアプリです。
 ## 各Classについての説明
 ### StartActivity.java
-![ログイン画面](/image/image1.png)
+![ログイン画面](https://github.com/kdrl/Wear-This-Today/tree/front/front/image/image1.png)
 ログイン画面のClass
 
 レイアウトはactivity_startと紐づけられている。
@@ -18,10 +18,10 @@ Androidでのフロントエンドアプリです。
 #### public void login(View v)
 ログインボタンが押された際に呼び出される。
 
-![FaceBookのログイン画面](/image/image2.png)
+![FaceBookのログイン画面](https://github.com/kdrl/Wear-This-Today/tree/front/front/image/image2.png)
 ここでは、リスナーでFaceBookログインを紐づけており、成功した場合はtokenを保存し、tokenを送信する。そして、Intentの遷移により、MainActivityへ移る。ここではリスナーの登録をしているだけであって、実際にログインが完了した際にこれらのリスナーが、onActivityResultで呼び出される。
 ### MainActivity
-![メイン画面](/image/image3.png)
+![メイン画面](https://github.com/kdrl/Wear-This-Today/tree/front/front/image/image3.png)
 ログインがかんりょした際にこの画面に映る。レイアウトはactivity_mainに紐づけられている。
 
 #### onCreate()
@@ -46,7 +46,7 @@ Androidでのフロントエンドアプリです。
 ### FormActivity
 服登録Activity
 
-![服情報登録画面](/image/image4.png)
+![服情報登録画面](https://github.com/kdrl/Wear-This-Today/tree/front/front/image/image4.png)
 #### onCreate()
 ここでAcitivityのコンテンツとの紐づけを行なっている。また、カメラからの画像の読み込みを行なっており、realmを使用するための初期化も行なっている。
 
@@ -56,7 +56,7 @@ Androidでのフロントエンドアプリです。
 
 ### ListActivity
 
-![服一覧画面](/image/image5.png)
+![服一覧画面](https://github.com/kdrl/Wear-This-Today/tree/front/front/image/image5.png)
 服一覧を確認できます。
 ここで服の削除も可能です。
 
@@ -72,7 +72,7 @@ mListView.setOnItemLongClickListener
 ### RegisterActivity
 元は前野くんが作ったものMainActivityへの復帰はIntentではなくてfinish()に変えました。
 
-![ユーザー情報登録画面](/image/image6.png)
+![ユーザー情報登録画面](https://github.com/kdrl/Wear-This-Today/tree/front/front/image/image6.png)
 #### onCreate()
 ここら辺でコンポーネントの紐づけと、とかをやってる。
 
