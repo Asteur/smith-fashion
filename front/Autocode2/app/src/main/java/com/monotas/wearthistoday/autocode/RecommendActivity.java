@@ -1,5 +1,6 @@
 package com.monotas.wearthistoday.autocode;
 
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
@@ -12,12 +13,18 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
+import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class RecommendActivity extends AppCompatActivity implements LocationListener{
     boolean isPermitted;//位置情報取得許可フラグ, あとで別のActivityに移す
@@ -92,11 +99,16 @@ public class RecommendActivity extends AppCompatActivity implements LocationList
                 JSONObject obj = new JSONObject();
                 obj.put("latitude",latitude);
                 obj.put("longitude",longitude);
-                String url = "http://wearthistoday.monotas.com/api/echo";
+                String url = "http://wearthistoday.monotas.com/api/test/echo";
+                SharedPreferences prefs = getSharedPreferences("token",MODE_PRIVATE);
+                final String dataString = prefs.getString("token","null");
+                JSONObject recFirst = new JSONObject();
+                recFirst.put("token",dataString);
+                recFirst.put("location",obj);
                 JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                         Request.Method.GET,
                         url,
-                        obj,
+                        recFirst,
                         new com.android.volley.Response.Listener<JSONObject>(){
                             @Override
                             public void onResponse(JSONObject response){
@@ -112,7 +124,15 @@ public class RecommendActivity extends AppCompatActivity implements LocationList
                                 Log.d("RecommendActivity",error.toString());
                             }
                         }
-                );
+                ) {
+                    @Override
+                    public Map<String, String> getHeaders() throws AuthFailureError {
+                        HashMap<String, String> headers = new HashMap<>();
+                        headers.put("token", dataString);
+                        return headers;
+                    }
+                }
+                ;
 
                 RequestSingleton.getInstance(this).addToReqeustQueue(jsonObjectRequest);
             } catch (JSONException e) {
