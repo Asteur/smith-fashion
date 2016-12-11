@@ -165,12 +165,12 @@ tokenが必要となるapiの基本例として作成した。
 </tr>
 </table>
 
-# データベース
-## RDBMS
+## データベース
+### RDBMS
 MySQL
-## Cache DB
+### Cache DB
 Redis
-## MySQL Install
+### MySQL Install
 <pre>
 Wear-This-Today admin$ brew install mysql
 Warning: You are using a pre-release version of Xcode.
@@ -196,31 +196,23 @@ Or, if you don't want/need a background service you can just run:
 🍺  /usr/local/Cellar/mysql/5.7.15: 13,510 files, 445.9M
 </pre>
 
-## Redis Install
+### Redis Install
 <pre>
-Wear-This-Today admin$ brew install mysql
-Warning: You are using a pre-release version of Xcode.
-You may encounter build failures or other breakages.
-Please create pull-requests instead of filing issues.
-==> Downloading https://homebrew.bintray.com/bottles/mysql-5.7.15.el_capitan.bot
+Wear-This-Today admin$ brew install redis
+==> Downloading https://homebrew.bintray.com/bottles/redis-3.2.6.sierra.bottle.t
 ######################################################################## 100.0%
-==> Pouring mysql-5.7.15.el_capitan.bottle.tar.gz
-==> Using the sandbox
-==> /usr/local/Cellar/mysql/5.7.15/bin/mysqld --initialize-insecure --user=admin
+==> Pouring redis-3.2.6.sierra.bottle.tar.gz
 ==> Caveats
-We've installed your MySQL database without a root password. To secure it run:
-    mysql_secure_installation
-
-To connect run:
-    mysql -uroot
-
-To have launchd start mysql now and restart at login:
-  brew services start mysql
+To have launchd start redis now and restart at login:
+  brew services start redis
 Or, if you don't want/need a background service you can just run:
-  mysql.server start
+  redis-server /usr/local/etc/redis.conf
 ==> Summary
-🍺  /usr/local/Cellar/mysql/5.7.15: 13,510 files, 445.9M
+🍺  /usr/local/Cellar/redis/3.2.6: 11 files, 1.7M
 </pre>
 
 ### References
+#### HomeBrew
+http://qiita.com/nori-k/items/f29481b5d65597e89552
+#### MySQL
 https://github.com/helloheesu/SecretlyGreatly/wiki/%EB%A7%A5%EC%97%90%EC%84%9C-mysql-%EC%84%A4%EC%B9%98-%ED%9B%84-%ED%99%98%EA%B2%BD%EC%84%A4%EC%A0%95%ED%95%98%EA%B8%B0
