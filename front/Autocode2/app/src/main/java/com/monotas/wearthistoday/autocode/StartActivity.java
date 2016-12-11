@@ -1,20 +1,13 @@
 package com.monotas.wearthistoday.autocode;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.provider.MediaStore;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -26,134 +19,48 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
-import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
-import com.facebook.HttpMethod;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Arrays;
 
-import io.realm.Realm;
-
-
-public class MainActivity extends AppCompatActivity {
-    static final int REQUEST_CAPTURE_IMAGE = 100;
+public class StartActivity extends AppCompatActivity {
     private CallbackManager callbackManager;
     private AccessTokenTracker accessTokenTracker;
     private AccessToken accessToken;
     SharedPreferences prefs;
-
-    Button button;
     String data;
     RelativeLayout layout;
-    TextView tokenText;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        tokenText = (TextView)findViewById(R.id.tokenText);
+        setContentView(R.layout.activity_start);
+        layout = (RelativeLayout)findViewById(R.id.activity_start);
 
-        layout = (RelativeLayout)findViewById(R.id.activity_main);
         FacebookSdk.sdkInitialize(this.getApplicationContext());
-         // Tokenを取り出す. (もしないなら"null"が得られる)
+        // Tokenを取り出す. (もしないなら"null"が得られる)
 
 
         prefs = getSharedPreferences("token",MODE_PRIVATE);
         data = prefs.getString("token","null");
-        tokenText.setText(data);
         if(data == "null"){
             Log.d("MainActivity","null");
-            // LogInフォームへ
-            LogInActivity();
+
         }
         else{
             Log.d("MainActivity","not");
-            try {
-                JSONObject obj = new JSONObject();
-                // ここでTokenを送信する.
-                String url = "http://wearthistoday.monotas.com/api/test/echo";
-                obj.put("token",data);
-                // データ送信
-                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                        Request.Method.POST,
-                        url,
-                        obj,
-                        new com.android.volley.Response.Listener<JSONObject>(){
-                            //成功した場合
-                            @Override
-                            public void onResponse(JSONObject response){
-                                Toast.makeText(getApplicationContext(),"Success!",Toast.LENGTH_SHORT).show();
-                                Log.d("FormActivity",response.toString());
-                            }
-                        },
-                        //失敗した場合
-                        new com.android.volley.Response.ErrorListener(){
-                            @Override
-                            public void onErrorResponse(VolleyError error){
-                                Log.d("FormActivity",error.toString());
-                                Snackbar.make(layout, "送信できません", Snackbar.LENGTH_LONG)
-                                        .setAction("Action", null).show();
-
-                            }
-                        }
-                );
-                //ここで送信を行う命令を出す
-                RequestSingleton.getInstance(this).addToReqeustQueue(jsonObjectRequest);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-
-
-
-    }
-
-
-    public void register(View v){
-        data = prefs.getString("token","null");
-        if(data != "null"){
-            Intent intent = new Intent();
-            intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
-
-            startActivityForResult(intent, REQUEST_CAPTURE_IMAGE);
-        }
-    }
-
-    public void closet(View v){
-        data = prefs.getString("token","null");
-        if(data != "null"){
-            Intent intent = new Intent(this,ListActivity.class);
+            Intent intent = new Intent(this,MainActivity.class);
             startActivity(intent);
+
         }
     }
-    /*ログアウトのボタン*/
-    public void logOut(View v){
-        //SharedPreferenceの削除
-        prefs.edit().remove("token").apply();
-        data = prefs.getString("token","null");
-        Log.d("token",data);
-        //ログアウトの処理
-        new GraphRequest(AccessToken.getCurrentAccessToken(), "/me/permissions/", null, HttpMethod.DELETE, new GraphRequest
-                    .Callback() {
-            @Override
-            public void onCompleted(GraphResponse graphResponse) {
-                LoginManager.getInstance().logOut();
-                FacebookSdk.sdkInitialize(getApplicationContext());
-                //ログアウトが終わったら、ログインフォームへ行く!
-                finish();
 
-            }
-        }).executeAsync();
-    }
-
-
-    /*ログイン用のメソッド*/
-    public void LogInActivity(){
+    public void login(View v){
+        Log.d("OK","OK");
         callbackManager = CallbackManager.Factory.create();
         // ここでログイン後の処理を実装.
         LoginManager.getInstance().registerCallback(callbackManager,
@@ -168,6 +75,9 @@ public class MainActivity extends AppCompatActivity {
                         SharedPreferences.Editor editor = prefs.edit();
                         editor.putString("token",accessToken);
                         editor.apply();
+                        Log.d("Success","成功!");
+                        Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                        startActivity(intent);
                         try {
                             JSONObject obj = new JSONObject();
 
@@ -200,16 +110,20 @@ public class MainActivity extends AppCompatActivity {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
+
+
                     }
 
                     @Override
                     public void onCancel() {
                         // App code
+                        Log.d("onCancel", "Cancelled");
                     }
 
                     @Override
                     public void onError(FacebookException exception) {
                         // App code
+                        Log.d("Error", String.valueOf(exception));
                     }
                 });
         LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"));
@@ -220,28 +134,11 @@ public class MainActivity extends AppCompatActivity {
                     AccessToken currentAccessToken) {
             }
         };
-    }
-
-
-    public void test(View v){
-        //ここで通信のテストする!!
 
     }
-    public void initial_register(View v){
-        Intent intent = new Intent(this,RegisterActivity.class);
-        startActivity(intent);
-    }
-
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data){
-        if(requestCode == REQUEST_CAPTURE_IMAGE && resultCode == Activity.RESULT_OK){
-            Bitmap capturedImage = (Bitmap)data.getExtras().get("data");
-            Intent formIntent = new Intent(this,FormActivity.class);
-            formIntent.putExtra("Image",capturedImage);
-            startActivity(formIntent);
-        }
-        else{
-            callbackManager.onActivityResult(requestCode, resultCode, data);
-        }
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 }

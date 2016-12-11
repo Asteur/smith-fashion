@@ -65,7 +65,6 @@ public class RegisterActivity extends AppCompatActivity {
 
         Toast.makeText(this, "登録しました. ", Toast.LENGTH_LONG).show();
 
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
+        finish();
     }
 }
