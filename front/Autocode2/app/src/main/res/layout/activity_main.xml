@@ -74,5 +74,12 @@
             android:layout_height="wrap_content"
             android:id="@+id/tes"
             android:onClick="test" />
+
+        <Button
+            android:text="Recommend"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/button9"
+            android:onClick="recommend" />
     </LinearLayout>
 </RelativeLayout>

@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
             try {
                 JSONObject obj = new JSONObject();
                 // ここでTokenを送信する.
-                String url = "http://wearthistoday.monotas.com/api/test/echo";
+                String url = "http://wearthistoday.monotas.com/api/signin";
                 obj.put("token",data);
                 // データ送信
                 JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
@@ -229,6 +229,11 @@ public class MainActivity extends AppCompatActivity {
     }
     public void initial_register(View v){
         Intent intent = new Intent(this,RegisterActivity.class);
+        startActivity(intent);
+    }
+
+    public void recommend(View v){
+        Intent intent = new Intent(this,RecommendActivity.class);
         startActivity(intent);
     }
 
