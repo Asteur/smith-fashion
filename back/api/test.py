@@ -1,0 +1,70 @@
+from flask import Blueprint, request, abort
+import json
+import requests
+from db.extension import mysql, redis
+
+test = Blueprint('test', __name__)
+
+@test.route('/echo', methods=['POST'])
+def echo():
+    # もしももらったデータがjsonでなかったら、400を返す。(400 Bad Request)
+    if not request.json:
+        abort(400)
+    # もらったJSONをサーバで表示(debug用)
+    print(request.json)
+    # JSONを返す。
+    return json.dumps(request.json)
+
+@test.route('/helloworld', methods=['POST'])
+def helloworld():
+    if not request.json["num"]:
+        abort(400)
+    print(request.json)
+    result = ""
+    for i in range(request.json["num"]):
+        result += "helloworld\n"
+    return result
+
+@test.route('/load', methods=['GET'])
+def load():
+    connection = mysql.connect()
+    cursor = connection.cursor()
+    cursor.execute('''select * from test''')
+    columns = cursor.description
+    result = []
+    for value in cursor.fetchall():
+        tmp = {}
+        for (index, column) in enumerate(value):
+            tmp[columns[index][0]] = column
+        result.append(tmp)
+    return str(result)
+
+@test.route('/save', methods=['POST'])
+def save():
+    if not request.json:
+        abort(400)
+    connection = mysql.connect()
+    cursor = connection.cursor()
+    query = '''insert into test (content) values (" ''' + str(request.json["content"]) + ''' ")'''
+    cursor.execute(query)
+    connection.commit()
+
+    return "OK"
+
+@test.route('/signin', methods=['POST'])
+def signin():
+    redis.setex(str(request.json["id"]),10,True)
+    return "ok"
+
+@test.route('/checklogin', methods=['GET'])
+def checklogin():
+    result = redis.get(str(request.json["id"]))
+    if not result:
+        result = "not authorized"
+    else:
+        result = "authorized"
+    return result
+
+@test.route('/checkrequest', methods=['GET'])
+def checkrequest():
+    return requests.get('http://wearthistoday.monotas.com').content
