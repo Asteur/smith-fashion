@@ -196,6 +196,16 @@ Or, if you don't want/need a background service you can just run:
 🍺  /usr/local/Cellar/mysql/5.7.15: 13,510 files, 445.9M
 </pre>
 
+### MySQL Backup
+#### mysqldump
+1. $ mysqldump -u[userId] -p[password] --all-databases > dump.sql  
+2. $ mysqldump -u[userId] -p[password] --databases [DB] > dump.sql 
+3. $ mysqldump -u[userId] -p[password] [DB] [Table]
+
+### MySQL restoration
+#### mysqldump
+mysql -u [userId] -p [password] [DB] < dump.sql
+
 ### Redis Install
 <pre>
 Wear-This-Today admin$ brew install redis
@@ -216,3 +226,4 @@ Or, if you don't want/need a background service you can just run:
 http://qiita.com/nori-k/items/f29481b5d65597e89552
 #### MySQL
 https://github.com/helloheesu/SecretlyGreatly/wiki/%EB%A7%A5%EC%97%90%EC%84%9C-mysql-%EC%84%A4%EC%B9%98-%ED%9B%84-%ED%99%98%EA%B2%BD%EC%84%A4%EC%A0%95%ED%95%98%EA%B8%B0
+http://dimdim.tistory.com/entry/MySQL-%EB%B0%B1%EC%97%85-%EB%B0%8F-%EB%B3%B5%EA%B5%AC
