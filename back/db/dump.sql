@@ -57,3 +57,10 @@ UNLOCK TABLES;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2016-12-08 18:34:37
+
+
+CREATE TABLE `user` (
+  `id` bigint(20) unsigned NOT NULL,
+  `name` mediumtext,
+  PRIMARY KEY (`id`)
+)

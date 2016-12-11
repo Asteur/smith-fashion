@@ -11,6 +11,7 @@ from db.extension import mysql
     as を用いて回避する
 '''
 from api.test import test as testApi
+from api.signin import signin as signinApi
 
 app = Flask(__name__)
 '''
@@ -26,6 +27,7 @@ mysql.init_app(app)
     APIを登録する
 '''
 app.register_blueprint(testApi, url_prefix='/api/test')
+app.register_blueprint(signinApi, url_prefix='/api')
 
 '''
     "/"に入ってくる時
