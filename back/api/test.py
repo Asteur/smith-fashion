@@ -68,3 +68,25 @@ def this_login():
 @test.route('/request', methods=['GET'])
 def this_request():
     return requests.get('http://wearthistoday.monotas.com').content
+
+@test.route('/alldata', methods=['POST'])
+def this_alldata():
+    token = str(request.json["token"])
+    if not token:
+        abort(400)
+    user_id = redis.get(token)
+    if not user_id:
+        abort(400)
+    user_id = user_id.decode("utf-8")
+    connection = mysql.connect()
+    cursor = connection.cursor()
+    query = 'select * from user where id=' + user_id
+    cursor.execute(query)
+    columns = cursor.description
+    result = []
+    for value in cursor.fetchall():
+        tmp = {}
+        for (index, column) in enumerate(value):
+            tmp[columns[index][0]] = column
+        result.append(tmp)
+    return str(result)
