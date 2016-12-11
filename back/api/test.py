@@ -71,15 +71,15 @@ def this_save():
 
     return "OK"
 
-@test.route('/signin', methods=['POST'])
-def this_signin():
+@test.route('/registerredis', methods=['POST'])
+def this_registerredis():
     # Redisに10秒間あるデータを保存させる命令
     # RedisはKeyとValueの関係を保存するcache DB
-    redis.setex(str(request.json["id"]),10,True)
+    redis.setex(str(request.json["id"]),30,True)
     return "ok"
 
-@test.route('/login', methods=['GET'])
-def this_login():
+@test.route('/checkregisterredis', methods=['GET'])
+def this_checkregisterredis():
     # もらった "id"をキーとするデータがあればresultにはその値が入って、そうでなけれは空になる
     result = redis.get(str(request.json["id"]))
     if not result:
