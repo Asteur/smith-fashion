@@ -163,6 +163,24 @@ tokenが必要となるapiの基本例として作成した。
 4. 正しく、signin処理が終わったので200とともにメッセージを返す。
 </td>
 </tr>
+
+<tr>
+<td>/api/test/weather</td>
+<td>POST</td>
+<td>Yes</td>
+<td>
+{ "token" : facebook_token, "lat" : 緯度, "lon" : 経度}
+</td>
+<td>
+天気情報が帰ってくる<br>
+Ex.
+<pre>
+{'list': [{'weather': [{'icon': '04n', 'id': 803, 'main': 'Clouds', 'description': 'broken clouds'}], 'main': {'temp_max': 283.15, 'pressure': 1026, 'humidity': 90, 'temp': 279.69, 'temp_min': 277.15}, 'name': 'Marunouchi', 'coord': {'lat': 35.683331, 'lon': 139.766663}, 'clouds': {'all': 75}, 'id': 1857654, 'dt': 1481536800, 'sys': {'country': ''}, 'wind': {'speed': 1.5, 'deg': 140}}], 'cod': '200', 'message': 'accurate', 'count': 1}
+</pre>
+<td>
+ClientからServerに命令を投げると、Serverからopen weather apiからデータを取ってきた返してくれる。
+</td>
+</tr>
 </table>
 
 ### 天気情報取得 API
