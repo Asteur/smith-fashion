@@ -102,17 +102,20 @@ public class FormActivity extends AppCompatActivity {
         final byte[] mImageData = baos.toByteArray();
 
         /*データの登録(ローカル)*/
-
+        RealmResults<ClothesData> query =realm.where(ClothesData.class).findAll();
         realm.beginTransaction();
+        int id = query.size() + 1;
         ClothesData clothesData = realm.createObject(ClothesData.class);
         clothesData.setColorText(colorText);
         clothesData.setTypeText(typeText);
         clothesData.setImageData(mImageData);
+        clothesData.setId(id);
         realm.commitTransaction();
         realm.close();
         //ここで通信を行います。
         try {
             obj = new JSONObject();
+            obj.put("id",id);
             obj.put("Color",colorText);
             obj.put("type",typeText);
             obj.put("Image",mImageData);
