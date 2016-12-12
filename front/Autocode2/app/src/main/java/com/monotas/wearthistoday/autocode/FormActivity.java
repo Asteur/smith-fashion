@@ -65,7 +65,7 @@ public class FormActivity extends AppCompatActivity {
     Bitmap clothesImage;
     Realm realm;
 
-
+    SharedPreferences prefs;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,26 +98,30 @@ public class FormActivity extends AppCompatActivity {
         JSONObject obj = null;
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        clothesImage.compress(Bitmap.CompressFormat.PNG,100,baos);
+        clothesImage.compress(Bitmap.CompressFormat.PNG,50,baos);
         final byte[] mImageData = baos.toByteArray();
-
+        prefs = getSharedPreferences("size",MODE_PRIVATE);
+        int data = prefs.getInt("size",0);
         /*データの登録(ローカル)*/
-
         realm.beginTransaction();
+        int id = data + 1;
+        prefs.edit().putInt("size",id).apply();
         ClothesData clothesData = realm.createObject(ClothesData.class);
         clothesData.setColorText(colorText);
         clothesData.setTypeText(typeText);
         clothesData.setImageData(mImageData);
+        clothesData.setId(id);
         realm.commitTransaction();
         realm.close();
         //ここで通信を行います。
         try {
             obj = new JSONObject();
+            obj.put("id",id);
             obj.put("Color",colorText);
             obj.put("type",typeText);
             obj.put("Image",mImageData);
             JSONObject alldata = new JSONObject();
-            SharedPreferences prefs = getSharedPreferences("token",MODE_PRIVATE);
+            prefs = getSharedPreferences("token",MODE_PRIVATE);
             String dataString = prefs.getString("token","null");
             String url = "http://wearthistoday.monotas.com/api/test/echo";
             alldata.put("token",dataString);

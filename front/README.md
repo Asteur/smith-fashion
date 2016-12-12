@@ -72,7 +72,7 @@ mListView.setOnItemLongClickListener
 ### RegisterActivity
 元は前野くんが作ったものMainActivityへの復帰はIntentではなくてfinish()に変えました。
 
-![ユーザー情報登録画面](https://github.com/kdrl/Wear-This-Today/tree/front/front/image/image6.png)
+![ユーザー情報登録画面](./image/image6.png)
 #### onCreate()
 ここら辺でコンポーネントの紐づけと、とかをやってる。
 
@@ -152,6 +152,54 @@ etc...(その他全て文字データ(TextView))
 
 * 実際に着たかどうか
 * リコメンドに対する評価
+## 登録データ
+
+| Key        | Value       | Type         |
+|:-----------|:------------|:-------------|
+| id     |      服の個別id    |    Int  |
+| Color    |        色      |    String     |
+| type         |      服の種類 |     String     |
+| Image      |    服の写真   |    byte[]    |
+
+### id
+1から順に割り振っている。仮に何かデータが消されても、その番号は使われることがない。
+
+### Color
+服の色、今のところ、
+|値|
+|:----|
+|赤|
+|白|
+|ベージュ|
+|黒|
+|紺|
+|青|
+のみとしている。
+
+### type
+服の種類、今のところ
+|値|
+|:---------|
+|T-シャツ(半袖)|
+|T-シャツ(長袖)|
+|セーター|
+|パーカー|
+|シャツ|
+|ワイシャツ|
+|ネクタイ|
+|ジャケット|
+|ジーンズ|
+|スラックス|
+としている。
+
+### Imageについて、
+```
+Bitmap.compress(Bitmap.CompressFormat.PNG,100,ByteArrayOutputStream);
+```
+で変換している。
+
+PNGに変換しており、100の値は圧縮のクオリティーで、0~100をとる。今回のcommitで、50に変更しました。
+
 
 ## Jsonによる送受信
 
@@ -161,12 +209,23 @@ etc...(その他全て文字データ(TextView))
 
 | Key        | Value       | Type         |
 |:-----------|:------------|:-------------|
-| Username   |  ユーザー名   |     String   |
-| gender     |      性別    |    Int(0 : 女性 1 : 男性)   |
+| token   |  ユーザートークン   |     String   |
+| id     |      服の個別id    |    Int  |
 | Color    |        色      |    String     |
 | type         |      服の種類 |     String     |
 | Image      |    服の写真   |    byte[]    |
 
+```
+{
+  "token":"ユーザートークン",
+  "Data":{
+    "id":2,
+    "Color":"白",
+    "type":"ネクタイ",
+    "Image":"画像のbyte[]"
+  }
+}
+```
 #### 帰り値
 
 jsonで成功した!みたいなデータ出してくれるといいです。
@@ -183,35 +242,66 @@ PNGで圧縮してます!! 多分ここミスるとやばいことになりま�
 
 | Key        | Value       | Type         |
 |:-----------|:------------|:-------------|
-| Username   |  ユーザー名   |     String   |
-| gender     |      性別    |    Int(0 : 女性 1 : 男性)   |
+| token  |  ユーザートークン   |     String   |
 | latitude     |      緯度    |    double  |
 |   longitude  |      経度    |    double |
+```
+{
+  "token":"ユーザートークン",
+  "LatLang":{
+    "Latitude":35,
+    "Longitude",135
+  }
+}
+```
 #### 帰り値(これが欲しい...)
 
 | Key        | Value       | Type         |
 |:-----------|:------------|:-------------|
-| Image      |    服の写真   |    byte[]    |
-| Color      |  色         |     String   |
-| type       |     服の種類 |     String   |
+| id      |    服の個別id  |    int    |
 
 こちらで検索かけます...
+```
+{
+  "id":1,
+  "id":2,
+  .
+  .
+  .
+
+}
+```
 
 #### 気に入った場合(POST)
 
 | Key        | Value       | Type         |
 |:-----------|:------------|:-------------|
-| Username   |  ユーザー名   |     String   |
-| gender     |      性別    |    Int(0 : 女性 1 : 男性)   |
-| Image      |    服の写真   |    byte[]    |
-| Color      |  色         |     String   |
-| type       |     服の種類 |     String   |
+| token   |  ユーザートークン   |     String   |
+|   recommend    |    気に入った。  |    int(1)   |
+
+```
+{
+  "token":usertoken,
+  "recommend" :1
+
+}
+```
 #### 気に入らなかった場合(POST)
 
 | Key        | Value       | Type         |
 |:-----------|:------------|:-------------|
-| Username   |  ユーザー名   |     String   |
-| gender     |      性別    |    Int(0 : 女性 1 : 男性)   |
-| Image      |    服の写真   |    byte[]    |
-| Color      |  色         |     String   |
-| type       |     服の種類 |     String   |
+| token   |  ユーザートークン |     String   |
+|recommend|気に入らなかった。|int(0)|
+|id|服のid|int|
+```
+{
+  "token":usertoken,
+  "recommend" :0,
+  clothes:{
+      "id" : 1
+      .
+      .
+      .
+  }
+}
+```
