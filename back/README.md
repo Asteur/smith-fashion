@@ -114,11 +114,11 @@ Redisとの連携の確認。30秒かん送ってきたidをRedis上に保管す
 None
 </td>
 <td>
-Wear This TodayサービスのAPIサーバーです。詳細はhttps://github.com/kdrl/Wear-This-Today より確認ください。
+googleのページっぽいものが返ってくる
 </td>
 <td>
 ここではサーバの中でGETを発動し、"/"のresponseをもらってきて、それを返している。<br>
-つまり、 Client ←→ Server "/api/test/request" ←→ Server "/" の様な形。
+つまり、 Client ←→ Server "/api/test/request" ←→ http://www.google.com の様な形。
 </td>
 </tr>
 
