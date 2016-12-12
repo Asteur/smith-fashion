@@ -165,6 +165,89 @@ tokenが必要となるapiの基本例として作成した。
 </tr>
 </table>
 
+### 天気情報取得 API
+OpenWeatherMap
+#### 特徴
+APIキーを取得すれば無料で利用することができる。
+※APIキーを取得することで無料で使用でるが、以下の注意があります。
+1,１つのデバイスからのリクエストは10分に１回に抑える
+2,リクエストに失敗したら、10分間は再リクエストを控える。
+
+#### 使い方
+緯度・経度からの取得
+
+<pre>http://api.openweathermap.org/data/2.5/find?lat=&lon=&cnt=&APPID=apiKey</pre>
+lat = 緯度
+lng = 経度
+cnt = 取得する情報数
+※apiKeyは個人情報になるため、別手段にて共有。
+<table>
+<tr>
+<th>パラメータ</th>
+<th>説明/th>
+</tr>
+<tr>
+<td>id</td>
+<td>地点ID</td>
+</tr>
+<tr>
+<td>name</td>
+<td>地点名</td>
+</tr>
+<tr>
+<td>main.temp</td>
+<td>現在の気温（単位：K（ケルビン））</td>
+</tr>
+<tr>
+<td>main.humnidity</td>
+<td>湿度（単位：％）</td>
+</tr>
+<tr>
+<td>main.pressure</td>
+<td>気圧（単位：hPa）</td>
+</tr>
+<tr>
+<td>main.temp_min</td>
+<td>最低気温（単位：K（ケルビン））</td>
+</tr>
+<tr>
+<td>main.temp_max</td>
+<td>最高気温（単位：K（ケルビン））</td>
+</tr>
+<tr>
+<td>dt</td>
+<td>取得時の時間（UNIX時間）</td>
+</tr>
+<tr>
+<td>rain.today</td>
+<td>降水量（単位：mm）</td>
+</tr>
+<tr>
+<td>snow.today</td>
+<td>降雪量（単位：mm）</td>
+</tr>
+<tr>
+<td>clouds.all</td>
+<td>雲量（単位：％）</td>
+</tr>
+<tr>
+<td>weather.id</td>
+<td>天気ID</td>
+</tr>
+<tr>
+<td>weather.main</td>
+<td>天気</td>
+</tr>
+<tr>
+<td>weather.description</td>
+<td>詳細な天気</td>
+</tr>
+<tr>
+<td>weather.icon</td>
+<td>天気アイコンID</td>
+</tr>
+</table>
+
 ## データベース
 ### RDBMS
 MySQL
