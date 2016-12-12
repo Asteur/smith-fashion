@@ -18,7 +18,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
+import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
@@ -32,10 +34,13 @@ import com.facebook.HttpMethod;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Arrays;
+import java.util.Hashtable;
+import java.util.Map;
 
 import io.realm.Realm;
 
@@ -173,6 +178,7 @@ public class MainActivity extends AppCompatActivity {
 
                             String url = "http://wearthistoday.monotas.com/api/test/echo";
                             obj.put("token",accessToken);
+                            Log.d("logintoken", String.valueOf(obj));
                             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                                     Request.Method.POST,
                                     url,
@@ -225,6 +231,58 @@ public class MainActivity extends AppCompatActivity {
 
     public void test(View v){
         //ここで通信のテストする!!
+        try {
+            JSONObject obj = new JSONObject();
+
+            String url = "http://wearthistoday.monotas.com/api/test/alldata";
+
+            obj.put("token",data);
+            JSONArray array = new JSONArray();
+
+
+            Log.d("logintoken", String.valueOf(obj));
+
+
+            /*
+            String ja= obj.toString();
+            JsonArrayRequest request = new JsonArrayRequest(Request.Method.POST, url, ja, new Response.Listener<JSONArray>() {
+                @Override
+                public void onResponse(JSONArray response) {
+                    // do something
+                    Log.d("JSONArray",response.toString());
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    // do something
+                    Log.d("JSONArray",error.toString());
+                }
+            });
+            */
+
+            HyperRequest hyperRequest = new HyperRequest(Request.Method.POST,url,obj,
+                    new Response.Listener<JSONArray>() {
+                        @Override
+                        public void onResponse(JSONArray response) {
+                            Log.d("Success",response.toString());
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.d("Error",error.toString());
+                        }
+                    }
+            );
+
+
+
+            RequestSingleton.getInstance(getApplicationContext()).addToReqeustQueue(hyperRequest);
+            //RequestSingleton.getInstance(getApplicationContext()).addToReqeustQueue(request);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
     }
     public void initial_register(View v){

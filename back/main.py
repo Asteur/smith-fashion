@@ -6,7 +6,7 @@
     前提条件
     1. MySQLが起動できていること
         1.1 dump.sqlでDBの骨子を保存しといた
-        1.2 dump.sqlを適応する方法はREADME.mdを参照
+        1.2 dump.sqlを適用する方法はREADME.mdを参照
     2. Redisが起動できていること
 '''
 from flask import Flask
