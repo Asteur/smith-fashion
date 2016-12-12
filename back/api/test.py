@@ -91,7 +91,8 @@ def this_checkregisterredis():
 @test.route('/request', methods=['GET'])
 def this_request():
     # requestsはGET命令とかPOSTとかを出すことができる
-    return requests.get('http://wearthistoday.monotas.com').content
+    # googleで試してみました
+    return requests.get('http://www.google.com').text
 
 '''
     以下ではClientでログインができており、
