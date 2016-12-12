@@ -129,3 +129,34 @@ def this_alldata():
     # この時点でresultには送られてきたtokenに対応するユーザのMySQL上のすべてのデータをJSONで持つ
     # 最後に文字列として返す
     return str(result)
+
+# 送られてきたlat,lonの気温を返す
+@test.route('/weather', methods=['POST'])
+def this_weather():
+    # まずはtoken,lat,lngをもらう
+    token = str(request.json["token"])
+    lat = str(request.json["lat"])
+    lon = str(request.json["lon"])
+    # データがそもそもなかったら間違っているので400を返す
+    if not (token or lat or lon):
+        abort(400)
+    # redisにこのtokenをキーとして持つデータがあるかどうかを確認する
+    user_id = redis.get(token)
+    # もしもらったtokenをKetとして持つデータがなかったら400を返す
+    if not user_id:
+        abort(400)
+    # パラメータを作成
+    params = {
+        "cnt": 1,
+        "lat": lat,
+        "lon": lon,
+        "APPID": "c29457b7d3cadfecf035898bad66d918"
+    }
+    url = 'http://api.openweathermap.org/data/2.5/find'
+    # 返ってくるJSONを処理
+    response_weather = requests.get(url, params=params)
+    response_weather = json.loads(response_weather.text)
+    # 以下のresponse_weather_tmpは気温だけを取り出した変数
+    # response_weather_tmp = response_weather["list"][0]["main"]["temp"]
+
+    return str(response_weather)
