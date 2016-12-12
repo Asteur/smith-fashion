@@ -277,12 +277,16 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
             RequestSingleton.getInstance(getApplicationContext()).addToReqeustQueue(hyperRequest);
             //RequestSingleton.getInstance(getApplicationContext()).addToReqeustQueue(request);
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        Intent intent = new Intent(this,ImageTestActivity.class);
+        startActivity(intent);
 
     }
     public void initial_register(View v){

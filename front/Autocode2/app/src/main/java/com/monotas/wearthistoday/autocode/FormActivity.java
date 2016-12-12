@@ -12,6 +12,7 @@ import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -109,7 +110,7 @@ public class FormActivity extends AppCompatActivity {
         ClothesData clothesData = realm.createObject(ClothesData.class);
         clothesData.setColorText(colorText);
         clothesData.setTypeText(typeText);
-        clothesData.setImageData(mImageData);
+        clothesData.setImage(Base64.encodeToString(mImageData,Base64.NO_WRAP));
         clothesData.setId(id);
         realm.commitTransaction();
         realm.close();

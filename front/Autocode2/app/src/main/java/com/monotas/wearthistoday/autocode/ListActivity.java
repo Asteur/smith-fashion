@@ -12,6 +12,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -87,7 +88,7 @@ public class ListActivity extends AppCompatActivity {
                 realm.beginTransaction();
                 final String color = clothesData.getColorText();
                 final String type = clothesData.getTypeText();
-                final byte[] imageData = clothesData.getImageData();
+                final String imageData = clothesData.getImage();
 
                 try {
                     SharedPreferences prefs = getSharedPreferences("token",MODE_PRIVATE);
@@ -96,7 +97,7 @@ public class ListActivity extends AppCompatActivity {
                     JSONObject obj = new JSONObject();
                     obj.put("Color",color);
                     obj.put("type",type);
-                    obj.put("Image",imageData);
+                    obj.put("image",imageData);
                     alldata.put("Data",obj);
                     alldata.put("token",dataString);
                     String url = "http://wearthistoday.monotas.com/api/test/echo";
@@ -190,7 +191,9 @@ public class ListActivity extends AppCompatActivity {
             ((TextView)convertView.findViewById(R.id.color)).setText(clothesData.getColorText());
 
             Bitmap bmp = null;
-            bmp = BitmapFactory.decodeByteArray(clothesData.getImageData(),0,clothesData.getImageData().length);
+            String ims = clothesData.getImage();
+            byte[] im = Base64.decode(ims,0);
+            bmp = BitmapFactory.decodeByteArray(im,0,im.length);
 
             ((ImageView)convertView.findViewById(R.id.image)).setImageBitmap(bmp);
 
