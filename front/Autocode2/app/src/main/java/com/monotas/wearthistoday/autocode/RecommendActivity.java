@@ -1,5 +1,6 @@
 package com.monotas.wearthistoday.autocode;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Criteria;
@@ -14,6 +15,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -156,12 +158,10 @@ public class RecommendActivity extends AppCompatActivity implements
 
         try {
             JSONObject obj = new JSONObject();
-            JSONObject latlang = new JSONObject();
-            String url = "http://wearthistoday.monotas.com/api/test/echo";
+            String url = "http://wearthistoday.monotas.com/api/test/weather";
             obj.put("token",dataString);
-            latlang.put("Latitude",latitude);
-            latlang.put("Longitude",longitude);
-            obj.put("LatLang",latlang);
+            obj.put("lat",latitude);
+            obj.put("lon",longitude);
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                     Request.Method.POST,
                     url,
@@ -192,7 +192,48 @@ public class RecommendActivity extends AppCompatActivity implements
 
 
     }
+    public void like(View v){
+        SharedPreferences prefs = getSharedPreferences("token",MODE_PRIVATE);
+        String dataString = prefs.getString("token","null");
+        try {
+            JSONObject obj = new JSONObject();
+            String url = "http://wearthistoday.monotas.com/api/test/echo";
+            obj.put("token",dataString);
 
+            obj.put("recommend",1);
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                    Request.Method.POST,
+                    url,
+                    obj,
+                    new com.android.volley.Response.Listener<JSONObject>(){
+                        @Override
+                        public void onResponse(JSONObject response){
+                            Toast.makeText(getApplicationContext(),"Success!",Toast.LENGTH_SHORT).show();
+                            Log.d("FormActivity",response.toString());
+
+                        }
+                    },
+                    new com.android.volley.Response.ErrorListener(){
+                        @Override
+                        public void onErrorResponse(VolleyError error){
+                            Log.d("FormActivity",error.toString());
+                            Snackbar.make(layout, "送信できません", Snackbar.LENGTH_LONG)
+                                    .setAction("Action", null).show();
+
+                        }
+                    }
+            );
+
+            RequestSingleton.getInstance(getApplicationContext()).addToReqeustQueue(jsonObjectRequest);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void dontlike(View v){
+        Intent intent = new Intent(this,ChooseActivity.class);
+        startActivity(intent);
+    }
     @Override
     public void onConnectionSuspended(int i) {
 

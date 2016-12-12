@@ -13,7 +13,10 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
         <LinearLayout
             android:orientation="horizontal"
@@ -75,18 +78,20 @@
             android:layout_weight="0.2">
 
             <Button
-                android:text="Button"
+                android:text="I like it!"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:id="@+id/button4"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:onClick="like" />
 
             <Button
-                android:text="Button"
+                android:text="I don't like it"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:id="@+id/button5"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:onClick="dontlike" />
         </LinearLayout>
 
     </LinearLayout>

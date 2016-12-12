@@ -274,12 +274,46 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
             );
+            String newUrl = "http://wearthistoday.monotas.com/api/test/load";
+            HyperRequest hyperRequest2 = new HyperRequest(Request.Method.POST,url,obj,
+                    new Response.Listener<JSONArray>() {
+                        @Override
+                        public void onResponse(JSONArray response) {
+                            Log.d("Success",response.toString());
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.d("Error",error.toString());
+                        }
+                    }
+            );
+            JsonArrayRequest req = new JsonArrayRequest(Request.Method.GET,
+                    newUrl,
+                    null,
+                    new Response.Listener<JSONArray>(){
+                        @Override
+                        public void onResponse(JSONArray response) {
 
+                            Log.d("test/load", String.valueOf(response));
+
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+
+                            Log.d("Error", String.valueOf(error));
+
+                        }
+                    }
+            );
 
 
 
             RequestSingleton.getInstance(getApplicationContext()).addToReqeustQueue(hyperRequest);
-            //RequestSingleton.getInstance(getApplicationContext()).addToReqeustQueue(request);
+            RequestSingleton.getInstance(getApplicationContext()).addToReqeustQueue(req);
 
         } catch (JSONException e) {
             e.printStackTrace();
