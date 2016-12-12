@@ -73,15 +73,15 @@ def this_save():
 
 @test.route('/registerredis', methods=['POST'])
 def this_registerredis():
-    # Redisに10秒間あるデータを保存させる命令
+    # Redisに30秒間あるデータを保存させる命令
     # RedisはKeyとValueの関係を保存するcache DB
-    redis.setex(str(request.json["id"]),30,True)
+    redis.setex(str(request.json["token"]),30,True)
     return "ok"
 
-@test.route('/checkregisterredis', methods=['GET'])
+@test.route('/checkregisterredis', methods=['POST'])
 def this_checkregisterredis():
-    # もらった "id"をキーとするデータがあればresultにはその値が入って、そうでなけれは空になる
-    result = redis.get(str(request.json["id"]))
+    # もらった "token"をキーとするデータがあればresultにはその値が入って、そうでなけれは空になる
+    result = redis.get(str(request.json["token"]))
     if not result:
         result = "not authorized"
     else:
