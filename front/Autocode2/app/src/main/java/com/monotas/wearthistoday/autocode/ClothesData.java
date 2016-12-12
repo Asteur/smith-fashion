@@ -13,8 +13,8 @@ public class ClothesData extends RealmObject{
 
     private String colorText;
     private String typeText;
-    private byte[] imageData;
     private int id;
+    private  String image;
 
 
     public String getColorText() {
@@ -29,12 +29,7 @@ public class ClothesData extends RealmObject{
     public void setTypeText(String typeText){
         this.typeText = typeText;
     }
-    public void setImageData(byte[] imageData){
-        this.imageData = imageData;
-    }
-    public byte[] getImageData(){
-        return this.imageData;
-    }
+
 
 
     public int getId() {
@@ -43,5 +38,13 @@ public class ClothesData extends RealmObject{
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }
