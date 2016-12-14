@@ -37,16 +37,17 @@ end
 local images = { }
 
 local initial_picture_id = 1
-local size = 50
+local size = 450
 
 for id = initial_picture_id, initial_picture_id + size - 1, 1 do
-   images[id-initial_picture_id] = string.format("%02d",id)..".jpg"
+   images[id-initial_picture_id] = "image"..string.format("%05d",id)..".jpg"
 end
 
 print( images )
 
 local descriptors = {}
 for index = 1, size, 1 do
+   print( "convert image"..string.format("%05d",index)..".jpg now..." )
    descriptors[index] = get_descriptor( images[index-1] )
 end
 
@@ -70,17 +71,18 @@ out:close()
 
 local images = { }
 
-local initial_picture_id = 51
-local size = 10
+local initial_picture_id = 451
+local size = 100
 
 for id = initial_picture_id, initial_picture_id + size - 1, 1 do
-   images[id-initial_picture_id] = string.format("%02d",id)..".jpg"
+   images[id-initial_picture_id] = "image"..string.format("%05d",id)..".jpg"
 end
 
 print( images )
 
 local descriptors = {}
 for index = 1, size, 1 do
+   print( "convert image"..string.format("%05d",initial_picture_id+index-1)..".jpg now..." )
    descriptors[index] = get_descriptor( images[index-1] )
 end
 
