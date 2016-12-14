@@ -17,10 +17,10 @@ class MNIST_Chain(Chain):
     #パラメータを含む関数の宣言 主に結合について 
     def __init__(self): 
         super(MNIST_Chain, self).__init__( 
-            l1=L.Linear(128,256), 
-            l2=L.Linear(256,512), 
-            l3=L.Linear(512,256), 
-            l4=L.Linear(256,2), 
+            l1=L.Linear(128,64), 
+            l2=L.Linear(64,32), 
+            l3=L.Linear(32,8), 
+            l4=L.Linear(8,2), 
         ) 
     #損失関数(交差エントロピー誤差関数)の定義 
     def __call__(self,x,y): 
@@ -43,11 +43,11 @@ optimizer.setup(model)
 
 """Learn and Test""" 
 #ミニバッチ法を用いる 
-max_epoch = 3 #回繰り返す 
+max_epoch = 6 #回繰り返す 
 #データサイズ 
 n = 1000
 #バッチサイズ 
-bs = 1000 
+bs = 500 
 training_error=np.zeros(max_epoch) 
 test_error=np.zeros(max_epoch) 
 for epoch in range(max_epoch): 
