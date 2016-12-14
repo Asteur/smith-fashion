@@ -17,10 +17,10 @@ class MNIST_Chain(Chain):
     #パラメータを含む関数の宣言 主に結合について 
     def __init__(self): 
         super(MNIST_Chain, self).__init__( 
-            l1=L.Linear(128,2000), 
-            l2=L.Linear(2000,2000), 
-            l3=L.Linear(2000,2000), 
-            l4=L.Linear(2000,2), 
+            l1=L.Linear(128,1000), 
+            l2=L.Linear(1000,1000), 
+            l3=L.Linear(1000,1000), 
+            l4=L.Linear(1000,3), 
         ) 
     #損失関数(交差エントロピー誤差関数)の定義 
     def __call__(self,x,y): 
@@ -43,11 +43,11 @@ optimizer.setup(model)
 
 """Learn and Test""" 
 #ミニバッチ法を用いる 
-max_epoch = 10 #回繰り返す 
+max_epoch = 5 #回繰り返す 
 #データサイズ 
-n = 450
+n = 1000
 #バッチサイズ 
-bs = 50 
+bs = 200 
 training_error=np.zeros(max_epoch) 
 test_error=np.zeros(max_epoch) 
 for epoch in range(max_epoch): 
@@ -65,7 +65,7 @@ for epoch in range(max_epoch):
     # print("$$$",x.data.shape,y.data.shape) 10x128 10x4
     loss, acc = model(x,y) 
 
-    # print("loss: %f" %loss.data, "acc:%f" %acc.data) 
+    print("for Test data : loss: %f" %loss.data, "acc:%f" %acc.data) 
 
     #プロット用の誤差 
     test_error[epoch]=loss.data 
@@ -87,6 +87,8 @@ for epoch in range(max_epoch):
     #プロット用の誤差 
     training_error[epoch]=loss.data 
 
+    print("for Training data : loss: %f" %loss.data, "acc:%f" %acc.data) 
+
  
 """Result""" 
 xt = Variable(xtest, volatile='on') 
@@ -94,10 +96,15 @@ yy = model.fwd(xt)
 ans = yy.data 
 nrow, ncol = ans.shape 
 ok = 0 
+print ("nrow, ncol : ",nrow, ncol)
 for i in range(nrow): 
+    print (ans[i,:]) 
     cls = np.argmax(ans[i,:]) 
     if cls == ytest[i]: 
+        print("Data ",i," : ",cls," == ",ytest[i])
         ok += 1 
+    else:
+        print("Data ",i," : ",cls," != ",ytest[i])
 
 print("accuracy:", ok, "/", nrow, " = ", (ok * 1.0)/nrow) 
 
