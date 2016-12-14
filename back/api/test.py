@@ -8,6 +8,17 @@ import json
 import requests
 from db.extension import mysql, redis
 '''
+    画像処理
+'''
+import re
+import os
+import base64
+from io import BytesIO
+from PIL import Image
+import sys
+import numpy as np
+import subprocess
+'''
     testというBlueprintを生成
     これをmain.pyで読み込んでapiとして登録
 '''
@@ -160,3 +171,27 @@ def this_weather():
     # response_weather_tmp = response_weather["list"][0]["main"]["temp"]
 
     return str(response_weather)
+
+# 送られてきた画像(base64)をjpgに変換し、main.luaでstylenetを介して特徴ベクトルに変換してサーバ側でconsole出力
+@test.route('/image', methods=['POST'])
+def this_image():
+    data = str(request.json["image"])
+    data = re.sub('^data:image/.+;base64,', '', data)
+    image_name_path = "./image/test.jpg"
+
+    im = Image.open(BytesIO(base64.b64decode(data)))
+    im.save(image_name_path, "JPEG")
+
+    # extract fashion features and format these features
+    result = subprocess.check_output(["th" ,"./api/main.lua", image_name_path]).decode("utf-8")
+    print (result)
+    result = result.split('\n')
+    print (result)
+    fashion_feature = subprocess.check_output(["th" ,"./api/main.lua", image_name_path]).split('\n')[:-3]
+    escape = re.compile(r'\x1b\[\?\d+h')
+    fashion_feature = list([escape.sub('', x) for x in fashion_feature])
+    fashion_feature = np.array(fashion_feature).astype(np.float32).reshape(1, 128)
+
+    return str(fashion_feature)
+
+
