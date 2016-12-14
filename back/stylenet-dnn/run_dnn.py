@@ -20,7 +20,7 @@ class MNIST_Chain(Chain):
             l1=L.Linear(128,1000), 
             l2=L.Linear(1000,1000), 
             l3=L.Linear(1000,1000), 
-            l4=L.Linear(1000,3), 
+            l4=L.Linear(1000,2), 
         ) 
     #損失関数(交差エントロピー誤差関数)の定義 
     def __call__(self,x,y): 
@@ -43,11 +43,11 @@ optimizer.setup(model)
 
 """Learn and Test""" 
 #ミニバッチ法を用いる 
-max_epoch = 5 #回繰り返す 
+max_epoch = 3 #回繰り返す 
 #データサイズ 
-n = 1000
+n = 450
 #バッチサイズ 
-bs = 200 
+bs = 150 
 training_error=np.zeros(max_epoch) 
 test_error=np.zeros(max_epoch) 
 for epoch in range(max_epoch): 
