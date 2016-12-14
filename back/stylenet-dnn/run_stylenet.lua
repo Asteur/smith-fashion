@@ -37,7 +37,7 @@ end
 local images = { }
 
 local initial_picture_id = 1
-local size = 450
+local size = 1000
 
 for id = initial_picture_id, initial_picture_id + size - 1, 1 do
    images[id-initial_picture_id] = "image"..string.format("%05d",id)..".jpg"
@@ -71,7 +71,7 @@ out:close()
 
 local images = { }
 
-local initial_picture_id = 451
+local initial_picture_id = 1001
 local size = 100
 
 for id = initial_picture_id, initial_picture_id + size - 1, 1 do
