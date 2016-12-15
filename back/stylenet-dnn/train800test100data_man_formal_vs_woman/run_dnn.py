@@ -36,18 +36,20 @@ class MNIST_Chain(Chain):
 """Initialize model""" 
 #モデルのセット 
 model = MNIST_Chain() 
-#最適化にはAdam 
+#最適化にはAdam or SGD
 optimizer = optimizers.SGD() 
 #モデルに最適化をセット 
 optimizer.setup(model) 
 
 """Learn and Test""" 
 #ミニバッチ法を用いる 
-max_epoch = 40 #回繰り返す 
+max_epoch = 150 #回繰り返す 
 #データサイズ 
 n = 800
-#バッチサイズ 
-bs = 200 
+
+# #バッチサイズ 
+# bs = 400 
+
 training_error=np.zeros(max_epoch) 
 test_error=np.zeros(max_epoch) 
 for epoch in range(max_epoch): 
@@ -70,20 +72,35 @@ for epoch in range(max_epoch):
     #プロット用の誤差 
     test_error[epoch]=loss.data 
 
-    #訓練データをミニバッチ法のためシャッフルする 
-    sffindx = np.random.permutation(n) 
-    for i in range(0, n, bs): 
-        #ミニバッチ法用のデータをセット 
-        x = Variable(xtrain[sffindx[i:(i+bs) if (i+bs) < n else n]]) 
-        y = Variable(ytrain[sffindx[i:(i+bs) if (i+bs) < n else n]]) 
-        #勾配初期化 
-        model.zerograds() 
-        #誤差計算 
-        loss, acc = model(x,y) 
-        #勾配計算 
-        loss.backward() 
-        #パラメータ更新 
-        optimizer.update() 
+    # バッチ
+    x = Variable(xtrain) 
+    y = Variable(ytrain) 
+    #勾配初期化 
+    model.zerograds() 
+    #誤差計算 
+    loss, acc = model(x,y) 
+    #勾配計算 
+    loss.backward() 
+    #パラメータ更新 
+    optimizer.update() 
+
+    # # ミニバッチ
+
+    # #訓練データをミニバッチ法のためシャッフルする 
+    # sffindx = np.random.permutation(n) 
+    # for i in range(0, n, bs): 
+    #     #ミニバッチ法用のデータをセット 
+    #     x = Variable(xtrain[sffindx[i:(i+bs) if (i+bs) < n else n]]) 
+    #     y = Variable(ytrain[sffindx[i:(i+bs) if (i+bs) < n else n]]) 
+    #     #勾配初期化 
+    #     model.zerograds() 
+    #     #誤差計算 
+    #     loss, acc = model(x,y) 
+    #     #勾配計算 
+    #     loss.backward() 
+    #     #パラメータ更新 
+    #     optimizer.update() 
+
     #プロット用の誤差 
     training_error[epoch]=loss.data 
 
