@@ -20,7 +20,7 @@ class MNIST_Chain(Chain):
             l1=L.Linear(128,1000), 
             l2=L.Linear(1000,1000), 
             l3=L.Linear(1000,1000), 
-            l4=L.Linear(1000,10), 
+            l4=L.Linear(1000,2), 
         ) 
     #損失関数(交差エントロピー誤差関数)の定義 
     def __call__(self,x,y): 
@@ -37,17 +37,17 @@ class MNIST_Chain(Chain):
 #モデルのセット 
 model = MNIST_Chain() 
 #最適化にはAdam 
-optimizer = optimizers.Adam() 
+optimizer = optimizers.SGD() 
 #モデルに最適化をセット 
 optimizer.setup(model) 
 
 """Learn and Test""" 
 #ミニバッチ法を用いる 
-max_epoch = 6 #回繰り返す 
+max_epoch = 40 #回繰り返す 
 #データサイズ 
-n = 1000
+n = 800
 #バッチサイズ 
-bs = 500 
+bs = 200 
 training_error=np.zeros(max_epoch) 
 test_error=np.zeros(max_epoch) 
 for epoch in range(max_epoch): 
@@ -74,8 +74,8 @@ for epoch in range(max_epoch):
     sffindx = np.random.permutation(n) 
     for i in range(0, n, bs): 
         #ミニバッチ法用のデータをセット 
-        x = Variable(xtrain[i:(i+bs)]) 
-        y = Variable(ytrain[i:(i+bs)]) 
+        x = Variable(xtrain[sffindx[i:(i+bs) if (i+bs) < n else n]]) 
+        y = Variable(ytrain[sffindx[i:(i+bs) if (i+bs) < n else n]]) 
         #勾配初期化 
         model.zerograds() 
         #誤差計算 
@@ -98,13 +98,14 @@ nrow, ncol = ans.shape
 ok = 0 
 print ("nrow, ncol : ",nrow, ncol)
 for i in range(nrow): 
+    print ("Data ", i+1)
     print (ans[i,:]) 
     cls = np.argmax(ans[i,:]) 
     if cls == ytest[i]: 
-        print("Data ",i," : ",cls," == ",ytest[i])
+        print(cls," == ",ytest[i])
         ok += 1 
     else:
-        print("Data ",i," : ",cls," != ",ytest[i])
+        print(cls," != ",ytest[i])
 
 print("accuracy:", ok, "/", nrow, " = ", (ok * 1.0)/nrow) 
 
