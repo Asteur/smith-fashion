@@ -17,10 +17,10 @@ class MNIST_Chain(Chain):
     #パラメータを含む関数の宣言 主に結合について 
     def __init__(self): 
         super(MNIST_Chain, self).__init__( 
-            l1=L.Linear(128,64), 
-            l2=L.Linear(64,32), 
-            l3=L.Linear(32,8), 
-            l4=L.Linear(8,2), 
+            l1=L.Linear(128,1000), 
+            l2=L.Linear(1000,1000), 
+            l3=L.Linear(1000,1000), 
+            l4=L.Linear(1000,10), 
         ) 
     #損失関数(交差エントロピー誤差関数)の定義 
     def __call__(self,x,y): 
