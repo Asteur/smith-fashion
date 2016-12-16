@@ -8,7 +8,8 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.monotas.wearthistoday.autocode.ChooseActivity">
+    tools:context="com.monotas.wearthistoday.autocode.ChooseActivity"
+    android:background="@color/colorAccent">
 
     <LinearLayout
         android:orientation="vertical"
@@ -31,7 +32,7 @@
             android:id="@+id/button8"
             android:layout_weight="0.1"
             android:fontFamily="monospace"
-            android:background="@color/colorPrimaryDark"
+            android:background="@color/colorButton"
             android:onClick="submit" />
     </LinearLayout>
 

@@ -41,6 +41,7 @@ import org.json.JSONObject;
 import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.Map;
+import java.util.Random;
 
 import io.realm.Realm;
 
@@ -51,17 +52,19 @@ public class MainActivity extends AppCompatActivity {
     private AccessTokenTracker accessTokenTracker;
     private AccessToken accessToken;
     SharedPreferences prefs;
+    Random ran;
 
     Button button;
     String data;
     RelativeLayout layout;
-    TextView tokenText;
+    //TextView tokenText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ran = new Random();
         setContentView(R.layout.activity_main);
-        tokenText = (TextView)findViewById(R.id.tokenText);
+        //tokenText = (TextView)findViewById(R.id.tokenText);
 
         layout = (RelativeLayout)findViewById(R.id.activity_main);
         FacebookSdk.sdkInitialize(this.getApplicationContext());
@@ -70,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
 
         prefs = getSharedPreferences("token",MODE_PRIVATE);
         data = prefs.getString("token","null");
-        tokenText.setText(data);
+        //tokenText.setText(data);
         if(data == "null"){
             Log.d("MainActivity","null");
             // LogInフォームへ
@@ -329,7 +332,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void recommend(View v){
-        Intent intent = new Intent(this,RecommendActivity.class);
+        Intent intent = new Intent(this,SettingActivity.class);
         startActivity(intent);
     }
 
@@ -341,8 +344,22 @@ public class MainActivity extends AppCompatActivity {
             formIntent.putExtra("Image",capturedImage);
             startActivity(formIntent);
         }
-        else{
-            callbackManager.onActivityResult(requestCode, resultCode, data);
+
+    }
+    @Override
+    protected void onRestart(){
+        super.onRestart();
+
+        int val = ran.nextInt(3);
+        Log.d("val", String.valueOf(val));
+        if(val == 0){
+            Intent intent = new Intent(this,EvalActivity.class);
+            startActivity(intent);
         }
+    }
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        Log.d("main","OnDestroy");
     }
 }

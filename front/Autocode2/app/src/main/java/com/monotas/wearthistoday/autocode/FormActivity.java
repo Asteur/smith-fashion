@@ -99,7 +99,7 @@ public class FormActivity extends AppCompatActivity {
         JSONObject obj = null;
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        clothesImage.compress(Bitmap.CompressFormat.JPEG,50,baos);
+        clothesImage.compress(Bitmap.CompressFormat.JPEG,100,baos);
         final byte[] mImageData = baos.toByteArray();
         prefs = getSharedPreferences("size",MODE_PRIVATE);
         int data = prefs.getInt("size",0);
