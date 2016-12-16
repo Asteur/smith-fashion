@@ -3,6 +3,34 @@ HACK U 2016
 
 ## Android Front-End
 Androidでのフロントエンドアプリです。
+
+### Recommend送信時のJson
+```
+{
+  "token":"ここにトークンが入る",
+  "gender":"0 or 1",
+  "priority":{
+    "formal"{
+      "rank":1,
+      "level":1
+    },
+    .
+    .
+    .
+
+  },
+  "images":[]
+}
+```
+* token : トークンが入る
+* gender : 女性なら0, 男性なら1(int)
+* priority : 基準(json)
+  * formal,kawaii,kakkoii,casualのキーがある.
+    * rank : 優先順位
+    * level : それぞれのkeyの度合い
+
+* images : 画像(Base64のStringの配列)
+
 ## 各Classについての説明
 ### StartActivity.java
 ![ログイン画面](./image/image1.png)
