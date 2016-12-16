@@ -20,7 +20,7 @@ from db.extension import mysql
     APIを読み込む
     変数の名前が重なることで正しく読み込まれない問題があったので as を用いて別名をつけることで解決
 '''
-from api.test import test as testApi
+# from api.test import test as testApi # これはテスト用api
 from api.signin import signin as signinApi
 from api.recommand import recommand as recommandApi
 '''
@@ -39,7 +39,7 @@ mysql.init_app(app)
     register blueprint
     APIを登録する
 '''
-app.register_blueprint(testApi, url_prefix='/api/test')
+# app.register_blueprint(testApi, url_prefix='/api/test') # これはテスト用api
 app.register_blueprint(signinApi, url_prefix='/api')
 app.register_blueprint(recommandApi, url_prefix='/api')
 '''
@@ -47,7 +47,7 @@ app.register_blueprint(recommandApi, url_prefix='/api')
 '''
 @app.route('/')
 def basic_response():
-    return "Wear This TodayサービスのAPIサーバーです。詳細はhttps://github.com/kdrl/Wear-This-Today より確認ください。\n"
+    return "Wear This TodayサービスのAPIサーバーです。詳細は https://github.com/kdrl/Wear-This-Today より確認ください。\n"
 
 '''
     サーバー起動

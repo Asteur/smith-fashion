@@ -2,6 +2,10 @@
 '''
     api/recommand.py
     ここが服のレコメンドapi
+    Deep learningで学習した、
+    モデルを読み込んで、
+    ユーザが送ってくれた画像に処理を加え、
+    ランキング付けをして返す。
 '''
 from flask import Blueprint, Response, request, abort
 import json
@@ -30,7 +34,15 @@ from chainer import Link, Chain, ChainList
 import chainer.functions as F 
 import chainer.links as L 
 
-"""Definition model""" 
+'''
+    recommandというBlueprintを生成
+    これをmain.pyで読み込んでapiとして登録
+'''
+recommand = Blueprint('recommand', __name__)
+
+'''
+    モデルの定義
+'''
 class MNIST_Chain(Chain): 
   #パラメータを含む関数の宣言 主に結合について 
   def __init__(self): 
@@ -52,19 +64,28 @@ class MNIST_Chain(Chain):
       # h4 = F.softmax(self.l4(h3)) これはクラスタリングに時
       h4 = self.l4(h3)
       return h4[:,0]
-      
-model = MNIST_Chain() 
-serializers.load_npz('./api/my.model', model)
 
 '''
-    recommandというBlueprintを生成
-    これをmain.pyで読み込んでapiとして登録
+    モデルインスタンスの作成及びロード
 '''
-recommand = Blueprint('recommand', __name__)
-
-@recommand.record
-def record_params(setup_state):
-  app = setup_state.app
+# 男性フォーマルさ
+man_formal_model = MNIST_Chain() 
+serializers.load_npz('./api/dnn_model/man_formal.model', man_formal_model)
+# 男性キャジュアルさ
+man_casual_model = MNIST_Chain() 
+serializers.load_npz('./api/dnn_model/man_casual.model', man_casual_model)
+# 女性フォーマルさ
+woman_formal_model = MNIST_Chain() 
+serializers.load_npz('./api/dnn_model/woman_formal.model', woman_formal_model)
+# 女性キャジュアルさ
+woman_casual_model = MNIST_Chain() 
+serializers.load_npz('./api/dnn_model/woman_casual.model', woman_casual_model)
+# かっこよさ
+kakkoii_model = MNIST_Chain() 
+serializers.load_npz('./api/dnn_model/kakkoii.model', kakkoii_model)
+# 可愛さ
+kawaii_model = MNIST_Chain() 
+serializers.load_npz('./api/dnn_model/kawaii.model', kawaii_model)
 
 # /api/recommand にPOSTがきたら以下が動作する
 @recommand.route('/recommand', methods=['POST'])
@@ -87,12 +108,12 @@ def this_recommand():
         # tokenがないっということはClient側で正しくtokenを渡していないこと
         res["error"] = "unknown token. you need login"
         return Response(json.dumps(res), status=400, mimetype='application/json')
-    
+
+    # 以上でユーザの認証は終わった
     user_id = user_id.decode("utf-8")
 
+    # imagesはbase64でエンコードされた画像の文字列の配列
     images = request.json["images"]
-    image_num = len(images)
-    print ("get ", image_num, " image") 
     image_num = len(images)
     for index in range(image_num):
         print (index)
@@ -101,23 +122,42 @@ def this_recommand():
         im = Image.open(BytesIO(base64.b64decode(images[index])))
         im.save(image_path, "JPEG")
 
-    # extract fashion features
-    lua_input = ["th" ,"./api/main.lua", user_id, str(image_num)]
-
+    # extract.luaより画像の特徴ベクトルを抽出
+    # まずは命令を作成する
+    lua_input = ["th" ,"./api/extract.lua", user_id, str(image_num)]
     for index in range(image_num):
         lua_input.append("./tmp/" + user_id +  "_" + str(index) + ".jpeg")
-
-    print ("lua command : ", str(lua_input))
-
+    # 命令をして、保存されたcsvのパスを習得
     csv_file_path = subprocess.check_output(lua_input).decode("utf-8")
     csv_file_path = re.sub('\t\n', '', csv_file_path)
-    print ("csv file name : ", csv_file_path)
 
-    user_data = np.array(np.genfromtxt("./tmp/1185849424834131.csv",delimiter=",")).astype(np.float32)
+    # 保存されたcsvを読み込んで回帰を行う
+    user_data = np.array(np.genfromtxt(csv_file_path,delimiter=",")).astype(np.float32)
     user_data = Variable(user_data, volatile='on') 
-    user_data_result = model.fwd(user_data) 
-    user_data_result = user_data_result.data 
-    print( user_data_result )
+
+    # 以下では評価関数を作成する
+    gender = request.json.get("gender")
+    priority = request.json.get("priority")
+
+    if not priority.get("kawaii"):
+        print (priority.get("kawaii"))
+
+    if (gender == 1):
+        # 男性の場合
+        user_data_result = kakkoii_model.fwd(user_data) 
+        user_data_result = user_data_result.data 
+        print( user_data_result )
+
+    elif (gender == 0):
+        # 女性の場合
+        user_data_result = kakkoii_model.fwd(user_data) 
+        user_data_result = user_data_result.data 
+        print( user_data_result )
+
+    else:
+        # エラー
+        res["error"] = "gender is missing."
+        return Response(json.dumps(res), status=400, mimetype='application/json')
 
     res = {
         "error" : "",
