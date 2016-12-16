@@ -11,7 +11,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.monotas.wearthistoday.autocode.MainActivity"
 
-    android:background="@color/colorAccent">
+    android:background="#d2e5f2">
 
     <LinearLayout
         android:orientation="vertical"
@@ -67,32 +67,5 @@
             android:layout_weight="1" />
 
 
-        <com.beardedhen.androidbootstrap.BootstrapButton
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:text="BootstrapButton"
-            app:bootstrapBrand="primary"
-            app:bootstrapSize="lg"
-            app:buttonMode="regular"
-            app:showOutline="false"
-            app:roundedCorners="true"
-            android:layout_margin="10dp"
-            app:bootstrapText="ユーザ初期登録 {fa-pencil-square-o}"
-            android:onClick="initial_register"
-            android:layout_weight="1" />
-
-        <com.beardedhen.androidbootstrap.BootstrapButton
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:text="BootstrapButton"
-            app:bootstrapBrand="primary"
-            app:bootstrapSize="lg"
-            app:buttonMode="regular"
-            app:showOutline="false"
-            app:roundedCorners="true"
-            android:layout_margin="10dp"
-            app:bootstrapText="Recommend {fa_heart}"
-            android:onClick="recommend"
-            android:layout_weight="1" />
     </LinearLayout>
 </RelativeLayout>

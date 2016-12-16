@@ -64,7 +64,9 @@
         <activity android:name=".ImageTestActivity" />
         <activity android:name=".ChooseActivity" />
         <activity android:name=".EvalActivity" />
-        <activity android:name=".SettingActivity"></activity>
+        <activity android:name=".SettingActivity" />
+        <activity android:name=".ResultActivity" />
+        <activity android:name=".GalleryActivity"></activity>
     </application>
 
 </manifest>

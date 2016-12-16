@@ -349,13 +349,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onRestart(){
         super.onRestart();
-
+        /*
         int val = ran.nextInt(3);
         Log.d("val", String.valueOf(val));
         if(val == 0){
             Intent intent = new Intent(this,EvalActivity.class);
             startActivity(intent);
         }
+        */
     }
     @Override
     protected void onDestroy(){

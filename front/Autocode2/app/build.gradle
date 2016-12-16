@@ -34,4 +34,5 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.google.android.gms:play-services:10.0.1'
     compile 'com.beardedhen:androidbootstrap:2.3.1'
+    
 }

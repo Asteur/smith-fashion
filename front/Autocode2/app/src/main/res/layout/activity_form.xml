@@ -10,7 +10,9 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.monotas.wearthistoday.autocode.FormActivity"
-    android:background="@color/colorAccent">
+    android:background="#d2e5f2"
+    android:elevation="24dp">
+
 
     <LinearLayout
         android:orientation="vertical"
@@ -20,34 +22,66 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true">
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:srcCompat="@mipmap/ic_launcher"
-            android:id="@+id/imageView"
-            android:layout_weight="1" />
-
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1">
 
-            <TextView
-                android:text="服の色"
+            <ListView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:id="@+id/colorText"
-                android:layout_weight="1"
-                android:gravity="center" />
+                android:layout_weight="9"
+                android:scrollbars="horizontal"
+                android:id="@+id/imageList"
+                android:elevation="15dp"
+                android:fadingEdge="horizontal" />
 
-            <Spinner
+            <com.beardedhen.androidbootstrap.BootstrapButton
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:id="@+id/colorSpinner"
-                android:layout_weight="1"
-                android:entries="@array/colorlist"
-                android:spinnerMode="dialog" />
+                android:text="BootstrapButton"
+                app:bootstrapBrand="primary"
+                app:bootstrapSize="lg"
+                app:buttonMode="regular"
+
+                app:showOutline="false"
+                app:roundedCorners="true"
+                app:bootstrapText="追加"
+                android:onClick="add"
+                android:layout_weight="2.6" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.8">
+
+            <TextView
+                android:text="weman"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:id="@+id/textView"
+                android:layout_weight="0.1"
+                android:gravity="right|center_vertical" />
+
+            <Switch
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:id="@+id/switch1"
+                android:layout_weight="0.04"
+                android:gravity="center_vertical|center_horizontal|center"
+                android:focusable="false" />
+
+            <TextView
+                android:text="man"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:id="@+id/textView9"
+                android:layout_weight="0.1"
+                android:gravity="center_vertical" />
         </LinearLayout>
 
         <LinearLayout
@@ -56,21 +90,76 @@
             android:layout_height="0dp"
             android:layout_weight="1">
 
-            <TextView
-                android:text="服の種類"
+            <LinearLayout
+                android:orientation="vertical"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:id="@+id/textView"
-                android:layout_weight="1"
-                android:gravity="center" />
+                android:layout_weight="1">
 
-            <Spinner
+                <TextView
+                    android:text="高"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textView11" />
+
+                <TextView
+                    android:text="優先順位"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textView12"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical" />
+
+                <TextView
+                    android:text="低"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textView13"
+                    android:gravity="bottom" />
+            </LinearLayout>
+
+            <ListView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:id="@+id/typeSpinner"
-                android:layout_weight="1"
-                android:entries="@array/typelist"
-                android:spinnerMode="dialog" />
+                android:layout_weight="9"
+                android:id="@+id/setlist" />
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="3">
+
+                <com.beardedhen.androidbootstrap.BootstrapButton
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:text="BootstrapButton"
+                    app:bootstrapBrand="primary"
+                    app:bootstrapSize="lg"
+                    app:buttonMode="regular"
+
+                    app:showOutline="false"
+                    app:roundedCorners="true"
+                    app:bootstrapText="追加"
+                    android:onClick="addset"
+                    android:layout_weight="2" />
+
+                <com.beardedhen.androidbootstrap.BootstrapButton
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:text="BootstrapButton"
+                    app:bootstrapBrand="primary"
+                    app:bootstrapSize="lg"
+                    app:buttonMode="regular"
+
+                    app:showOutline="false"
+                    app:roundedCorners="true"
+                    app:bootstrapText="Clear"
+                    android:onClick="clear"
+                    android:layout_weight="2"
+                    android:textSize="3sp" />
+            </LinearLayout>
+
         </LinearLayout>
 
         <com.beardedhen.androidbootstrap.BootstrapButton
@@ -86,7 +175,7 @@
             android:layout_margin="10dp"
             app:bootstrapText="登録"
             android:onClick="register"
-            android:layout_weight="1" />
+            android:layout_weight="0.6" />
 
     </LinearLayout>
 

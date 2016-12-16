@@ -10,7 +10,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.monotas.wearthistoday.autocode.StartActivity"
-    android:background="@color/colorAccent">
+    android:background="#d2e5f2">
 
     <LinearLayout
         android:orientation="vertical"
