@@ -22,6 +22,7 @@ from db.extension import mysql
 '''
 from api.test import test as testApi
 from api.signin import signin as signinApi
+from api.recommand import recommand as recommandApi
 '''
     Flaskアプリケーション
 '''
@@ -40,15 +41,18 @@ mysql.init_app(app)
 '''
 app.register_blueprint(testApi, url_prefix='/api/test')
 app.register_blueprint(signinApi, url_prefix='/api')
+app.register_blueprint(recommandApi, url_prefix='/api')
 '''
     "/"に入ってくる時
 '''
 @app.route('/')
 def basic_response():
     return "Wear This TodayサービスのAPIサーバーです。詳細はhttps://github.com/kdrl/Wear-This-Today より確認ください。\n"
+
 '''
     サーバー起動
 '''
 if __name__ == '__main__':
+
     # run application with debug mode
     app.run(port=3000, host='0.0.0.0', debug=True)

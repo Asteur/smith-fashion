@@ -32,4 +32,40 @@ local function get_descriptor( path )
    return stylenet:forward( I )[1]:clone()
 end
 
-print( get_descriptor( arg[1] ) ) 
+-- arg[1] : user_id
+-- arg[2] : データ数
+-- arg[3]から続く文字列はimageのpathが書かれております。
+
+local images = { }
+
+local index = 0
+local size = arg[2]
+
+for index = 0, size - 1, 1 do
+   images[index] = arg[3 + index]
+end
+
+local descriptors = {}
+for index = 0, size - 1, 1 do
+   descriptors[index] = get_descriptor( images[index] )
+end
+
+local csvfilename = "./tmp/"..arg[1]..".csv"
+
+local out = assert(io.open(csvfilename, "w")) -- open a file for serialization
+
+splitter = ","
+for i = 0, size - 1 do
+    for j = 1, 128 do
+        out:write(descriptors[i][j])
+        if j == 128 then
+            out:write("\n")
+        else
+            out:write(splitter)
+        end
+    end
+end
+
+out:close()
+
+print ( "./tmp/"..arg[1]..".csv" )

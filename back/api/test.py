@@ -3,7 +3,7 @@
     api/test.py
     ここにテスト用のapiを作成してテストを行う
 '''
-from flask import Blueprint, request, abort
+from flask import Blueprint, request, abort, Response
 import json
 import requests
 from db.extension import mysql, redis
@@ -177,8 +177,7 @@ def this_weather():
 def this_image():
     data = str(request.json["image"])
     data = re.sub('^data:image/.+;base64,', '', data)
-    image_name_path = "./image/test.jpg"
-
+    image_name_path = "./tmp/test.jpg"
     im = Image.open(BytesIO(base64.b64decode(data)))
     im.save(image_name_path, "JPEG")
 
@@ -193,5 +192,32 @@ def this_image():
     fashion_feature = np.array(fashion_feature).astype(np.float32).reshape(1, 128)
 
     return str(fashion_feature)
+
+@test.route('/recommand', methods=['POST'])
+def this_recommand():
+    res = {
+        "result" : [
+            {
+                "index" : 0,
+                "kakkoii" : 1,
+                "kawaii" : 2,
+                "formal" : 3,
+                "casual" : 4
+            },{
+                "index" : 1,
+                "kakkoii" : 1,
+                "kawaii" : 2,
+                "formal" : 3,
+                "casual" : 4
+            },{
+                "index" : 2,
+                "kakkoii" : 1,
+                "kawaii" : 2,
+                "formal" : 3,
+                "casual" : 4
+            }
+        ]
+    }
+    return Response(json.dumps(res), status=200, mimetype='application/json')
 
 
