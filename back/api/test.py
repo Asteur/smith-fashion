@@ -1,4 +1,6 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
+
 '''
     api/test.py
     ここにテスト用のapiを作成してテストを行う
