@@ -1,4 +1,6 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
+
 '''
     api/signin.py
     ここにログイン・会員登録を行う処理を書く
