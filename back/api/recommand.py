@@ -13,9 +13,10 @@ import requests
 from db.extension import mysql, redis
 
 '''
-    画像処理
+    システム管理、画像処理
 '''
 import re
+import glob, os
 import os
 import base64
 from io import BytesIO
@@ -25,7 +26,7 @@ import numpy as np
 import subprocess
 
 '''
-    画像処理
+    Deep learning
 '''
 import chainer 
 from chainer import cuda, Function, gradient_check, report, training, utils, Variable 
@@ -91,8 +92,7 @@ serializers.load_npz('./api/dnn_model/kawaii.model', kawaii_model)
 @recommand.route('/recommand', methods=['POST'])
 def this_recommand():
     res = {
-        "error" : "",
-        "result" : []
+        "error" : ""
     }
 
     # まず、tokenをとる
@@ -139,34 +139,78 @@ def this_recommand():
     gender = request.json.get("gender")
     priority = request.json.get("priority")
 
-    if not priority.get("kawaii"):
-        print (priority.get("kawaii"))
+    # if not priority.get("kawaii"):
+    #     print (priority.get("kawaii"))
+
+    # 返すresult行列を準備
+    # total_errorが少ない方が勝ち
+    result = []
+    for index in range(image_num):
+        result.append({
+            "total_error" : 0,
+            "index" : index,
+            "formal" : None,
+            "casual" : None,
+            "kakkoii" : None,
+            "kawaii" : None
+        })
+
+    if priority.get("kakkoii"):
+        user_data_result = kakkoii_model.fwd(user_data).data
+        for index in range(image_num):
+            result[index]["kakkoii"] = float(user_data_result[index])
+            result[index]["total_error"] = abs(priority["kakkoii"]["level"]/5.0 - result[index]["kakkoii"])
+
+    if priority.get("kawaii"):
+        user_data_result = kawaii_model.fwd(user_data).data 
+        for index in range(image_num):
+            result[index]["kawaii"] = float(user_data_result[index])
+            result[index]["total_error"] = abs(priority["kawaii"]["level"]/5.0 - result[index]["kawaii"])
 
     if (gender == 1):
         # 男性の場合
-        user_data_result = kakkoii_model.fwd(user_data) 
-        user_data_result = user_data_result.data 
-        print( user_data_result )
+
+        if priority.get("formal"):
+            user_data_result = man_formal_model.fwd(user_data).data 
+            for index in range(image_num):
+                result[index]["formal"] = float(user_data_result[index])
+                result[index]["total_error"] = abs(priority["formal"]["level"]/5.0 - result[index]["formal"])
+                
+        if priority.get("casual"):
+            user_data_result = man_casual_model.fwd(user_data).data 
+            for index in range(image_num):
+                result[index]["casual"] = float(user_data_result[index])
+                result[index]["total_error"] = abs(priority["casual"]["level"]/5.0 - result[index]["casual"])
 
     elif (gender == 0):
         # 女性の場合
-        user_data_result = kakkoii_model.fwd(user_data) 
-        user_data_result = user_data_result.data 
-        print( user_data_result )
 
+        if priority.get("formal"):
+            user_data_result = woman_formal_model.fwd(user_data).data 
+            for index in range(image_num):
+                result[index]["formal"] = float(user_data_result[index])
+                result[index]["total_error"] = abs(priority["formal"]["level"]/5.0 - result[index]["formal"])
+                
+        if priority.get("casual"):
+            user_data_result = woman_casual_model.fwd(user_data).data 
+            for index in range(image_num):
+                result[index]["casual"] = float(user_data_result[index])
+                result[index]["total_error"] = abs(priority["casual"]["level"]/5.0 - result[index]["casual"])
+          
     else:
         # エラー
         res["error"] = "gender is missing."
         return Response(json.dumps(res), status=400, mimetype='application/json')
 
+    # resultの結果をtotal_errorの少ない順で並べる
+    result = sorted(result, key = lambda k: float(k['total_error']), reverse = False)
+
+    # tmpの中のデータを消す
+    for f in glob.glob("./tmp/" + user_id + "*"):
+        os.remove(f)
+
+    #　正しく処理できたので、返す。
     res = {
-        "error" : "",
-        "result" : [{
-        "index" : 0,
-        "formal" : 0,
-        "casual" : 0,
-        "kakkoii" : 0,
-        "kawaii" : 0
-        }]
+        "result" : result
     }
     return Response(json.dumps(res), status=200, mimetype='application/json')
