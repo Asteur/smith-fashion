@@ -132,7 +132,8 @@ def this_recommand():
         lua_input.append("./tmp/" + user_id +  "_" + str(index) + ".jpeg")
     # 命令をして、保存されたcsvのパスを習得
     csv_file_path = subprocess.check_output(lua_input).decode("utf-8")
-    csv_file_path = re.sub('\t\n', '', csv_file_path)
+    csv_file_path = re.sub(r'\t\n', '', csv_file_path)
+    csv_file_path = re.sub(r'\x1b\[\?\d+h', '', csv_file_path)
 
     # 保存されたcsvを読み込んで回帰を行う
     # with open(csv_file_path) as csvfile:
