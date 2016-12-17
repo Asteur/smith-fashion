@@ -36,6 +36,7 @@ from chainer import datasets, iterators, optimizers, serializers
 from chainer import Link, Chain, ChainList 
 import chainer.functions as F 
 import chainer.links as L 
+import pandas as pd
 
 '''
     recommandというBlueprintを生成
@@ -134,7 +135,13 @@ def this_recommand():
     csv_file_path = re.sub('\t\n', '', csv_file_path)
 
     # 保存されたcsvを読み込んで回帰を行う
-    user_data = np.array(np.genfromtxt(csv_file_path,delimiter=",")).astype(np.float32)
+    # with open(csv_file_path) as csvfile:
+    #     user_data=pd.read_csv(csvfile, sep=',',header=None)
+    #     user_data = np.array(user_data.values).astype(np.float32)
+    #     user_data = Variable(user_data, volatile='on') 
+
+    user_data=pd.read_csv(csv_file_path, sep=',',header=None)
+    user_data = np.array(user_data.values).astype(np.float32)
     user_data = Variable(user_data, volatile='on') 
 
     # 以下では評価関数を作成する
