@@ -25,6 +25,7 @@ from db.extension import mysql
 # from api.test import test as testApi # これはテスト用api
 from api.signin import signin as signinApi
 from api.recommand import recommand as recommandApi
+from api.contribute import contribute as contributeApi
 '''
     Flaskアプリケーション
 '''
@@ -44,6 +45,7 @@ mysql.init_app(app)
 # app.register_blueprint(testApi, url_prefix='/api/test') # これはテスト用api
 app.register_blueprint(signinApi, url_prefix='/api')
 app.register_blueprint(recommandApi, url_prefix='/api')
+app.register_blueprint(contributeApi, url_prefix='/api')
 '''
     "/"に入ってくる時
 '''
