@@ -169,13 +169,13 @@ def this_recommand():
         user_data_result = kakkoii_model.fwd(user_data).data
         for index in range(image_num):
             result[index]["kakkoii"] = float(user_data_result[index])
-            result[index]["total_error"] = abs((priority["kakkoii"]["level"] - 1)/4.0 - result[index]["kakkoii"])
+            result[index]["total_error"] = (5 - priority["kakkoii"]["rank"]) * abs((priority["kakkoii"]["level"] - 1)/4.0 - result[index]["kakkoii"])
 
     if priority.get("kawaii"):
         user_data_result = kawaii_model.fwd(user_data).data 
         for index in range(image_num):
             result[index]["kawaii"] = float(user_data_result[index])
-            result[index]["total_error"] = abs((priority["kawaii"]["level"] - 1)/4.0  - result[index]["kawaii"])
+            result[index]["total_error"] = (5 - priority["kawaii"]["rank"]) * abs((priority["kawaii"]["level"] - 1)/4.0  - result[index]["kawaii"])
 
     if (gender == 1):
         # 男性の場合
@@ -184,13 +184,13 @@ def this_recommand():
             user_data_result = man_formal_model.fwd(user_data).data 
             for index in range(image_num):
                 result[index]["formal"] = float(user_data_result[index])
-                result[index]["total_error"] = abs((priority["formal"]["level"] - 1)/4.0  - result[index]["formal"])
+                result[index]["total_error"] = (5 - priority["formal"]["rank"]) * abs((priority["formal"]["level"] - 1)/4.0  - result[index]["formal"])
                 
         if priority.get("casual"):
             user_data_result = man_casual_model.fwd(user_data).data 
             for index in range(image_num):
                 result[index]["casual"] = float(user_data_result[index])
-                result[index]["total_error"] = abs((priority["casual"]["level"] - 1)/4.0  - result[index]["casual"])
+                result[index]["total_error"] = (5 - priority["casual"]["rank"]) * abs((priority["casual"]["level"] - 1)/4.0  - result[index]["casual"])
 
     elif (gender == 0):
         # 女性の場合
@@ -199,13 +199,13 @@ def this_recommand():
             user_data_result = woman_formal_model.fwd(user_data).data 
             for index in range(image_num):
                 result[index]["formal"] = float(user_data_result[index])
-                result[index]["total_error"] = abs((priority["formal"]["level"] - 1)/4.0  - result[index]["formal"])
+                result[index]["total_error"] = (5 - priority["formal"]["rank"]) * abs((priority["formal"]["level"] - 1)/4.0  - result[index]["formal"])
                 
         if priority.get("casual"):
             user_data_result = woman_casual_model.fwd(user_data).data 
             for index in range(image_num):
                 result[index]["casual"] = float(user_data_result[index])
-                result[index]["total_error"] = abs((priority["casual"]["level"] - 1)/4.0  - result[index]["casual"])
+                result[index]["total_error"] = (5 - priority["casual"]["rank"]) * abs((priority["casual"]["level"] - 1)/4.0  - result[index]["casual"])
           
     else:
         # エラー
