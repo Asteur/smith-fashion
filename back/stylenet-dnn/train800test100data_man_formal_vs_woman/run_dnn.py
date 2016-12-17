@@ -47,12 +47,12 @@ optimizer.setup(model)
 
 """Learn and Test""" 
 #ミニバッチ法を用いる 
-max_epoch = 30 #回繰り返す 
+max_epoch = 10 #回繰り返す 
 #データサイズ 
 n = 800
 
 #バッチサイズ 
-bs = 10 
+bs = 50 
 
 training_error=np.zeros(max_epoch) 
 test_error=np.zeros(max_epoch) 
